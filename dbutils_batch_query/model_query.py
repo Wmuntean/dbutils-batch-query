@@ -58,7 +58,7 @@ The query processing pipeline consists of the following stages:
     - Ensure proper API credentials are configured before using this module.
     - Consider token usage and rate limits when processing large batches.
 
-.. currentmodule:: model_query
+.. currentmodule:: dbutils_batch_query.model_query
 
 Functions
 =========
@@ -69,13 +69,12 @@ Functions
     :template: function_name_only.rst
 
     with_default_return
-    extract_json_exhibits
+    extract_json_items
     batch_model_query
 
 Standalone Execution
 =====================
-When imported as a module, this provides essential utilities for querying language models and processing their responses.
-It is not intended to be run as a standalone script.
+This module is not intended to be run as a standalone script.
 
 """
 
@@ -177,6 +176,7 @@ def extract_json_items(text: str) -> dict:
 
     .. Warning::
         Ensure that the input text contains properly formatted JSON in code blocks.
+        The ``repair_json`` package is used to help support noncompliant JSON.
 
     Examples
     --------
@@ -438,22 +438,10 @@ async def batch_model_query(
 
     Examples
     --------
-    >>> results = await batch_model_query(
-    ...     prompt_info=[
-    ...         {
-    ...             "system": "You are a helpful assistant.",
-    ...             "user": "Hello!",
-    ...         }
-    ...     ],
-    ...     model="gpt-3.5-turbo",
-    ...     process_func=my_process_func,
-    ...     batch_size=5,
-    ...     max_concurrent_requests=2,
-    ...     results_path="results/",
-    ...     run_name="test_run",
-    ... )
-    >>> print(results[0]["message"])
-    "Hi! How can I assist you today?"
+    .. include:: ../../../../README.md
+        :parser: myst_parser.sphinx_
+        :start-after: <!-- start Example -->
+        :end-before: <!-- end Example -->
     """
 
     if not token and not host:

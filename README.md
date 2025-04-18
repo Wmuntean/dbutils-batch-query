@@ -51,15 +51,15 @@ print(dbutils_batch_query.__version__)
 ## Documentation
 
 
-- API documentation is available at https://Wmuntean.github.io/dbutils_batch_query/
+- API documentation is available at [Wmuntean GitHub Pages](https://Wmuntean.github.io/dbutils_batch_query/).
 
 ## Usage
 
 This package provides functions for querying Databricks models in batches and managing prompt templates.
 <!-- batch_model_query -->
 ### Batch Model Querying
-
-The `dbutils_batch_query.model_query.batch_model_query` function allows you to send multiple prompts to a specified model asynchronously.
+<!-- start Example -->
+The [`batch_model_query`](#dbutils_batch_query.model_query.batch_model_query) function allows you to send multiple prompts to a specified model asynchronously.
 
 #### Running in a Notebook
 ```python
@@ -162,8 +162,8 @@ for result in results:
         # Access raw message or processed response
         # print(result["message"])
         print(result["processed_response"])
-
 ```
+<!-- end Example -->
 
 Key features:
 - Asynchronous processing of multiple prompts.
@@ -175,7 +175,7 @@ Key features:
 
 ### Prompt Template Management
 
-The `dbutils_batch_query.prompts` module helps manage Jinja2 prompt templates.
+The [`prompts`}(#dbutils_batch_query.prompts) module helps manage Jinja2 prompt templates.
 
 **Load all templates from a directory:**
 

@@ -3,27 +3,47 @@ API Reference
 
 Documentation for all the main modules and functions of the dbutils_batch_query package.
 
-.. rubric:: Data Import
+The ``dbutils_batch_query`` package provides a unified interface for batch processing of model queries and prompt management. This documentation offers an overview of the core components of the API and provides links to detailed module documentation and key functions.
 
-.. include:: ../../../README.md
-   :parser: myst_parser.sphinx_
-   :start-after: <!-- data_import -->
-   :end-before: <!-- module_name 1 -->
+Modules Overview
+----------------
 
-.. rubric:: Analysis
+* **Model Query**:  
+  The :py:mod:`~dbutils_batch_query.model_query` module contains functions to handle model queries in batch. Key functions include:
 
-.. include:: ../../../README.md
-   :parser: myst_parser.sphinx_
-   :start-after: <!-- module_name 2 -->
-   :end-before: <!-- end modules -->
+  - :py:func:`~dbutils_batch_query.model_query.with_default_return`  
+    Handles setting or retrieving default return values.
+  - :py:func:`~dbutils_batch_query.model_query.extract_json_items`  
+    Extracts JSON items from query responses.
+  - :py:func:`~dbutils_batch_query.model_query.batch_model_query`  
+    Executes and manages batch queries.
+
+
+* **Prompts**:  
+  The :py:mod:`~dbutils_batch_query.prompts` module manages prompt rendering and executions. For example:
+
+  - :py:func:`~dbutils_batch_query.prompts.load_prompt`  
+    Loads a single prompt with jinja rendering.
+
+For more detailed insights into each module, please see:
+   - :doc:`model_query`
+   - :doc:`prompts`
+
+Quick Start Examples
+--------------------
+   .. include:: ../../../README.md
+      :parser: myst_parser.sphinx_
+      :start-after: <!-- start Example -->
+      :end-before: <!-- end Example -->
+
+
+.. Note::
+   Ensure that your environment is correctly configured before executing batch queries. Refer to each module's documentation for detailed parameter descriptions and further examples.
 
 .. toctree::
    :maxdepth: 2
    :hidden:
+   :titlesonly:
 
-   dbutils_batch_query <dbutils_batch_query>
-   
-   data_import
-   example_analysis <example_analysis>
-   ../_collections/notebooks/analysis_notebook
-   
+   model_query
+   prompts
