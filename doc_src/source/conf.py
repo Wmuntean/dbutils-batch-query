@@ -6,17 +6,16 @@
 import sys
 from pathlib import Path
 
-import tomlkit
+import toml
 
 sphinx_source = Path(__file__).resolve().parent
 sys.path.insert(0, sphinx_source.as_posix())
-from sphinx_utils import clean_copied, copy_collections, get_poetry_version  # noqa
+from utils import clean_copied, copy_collections, get_poetry_version  # noqa
 
 repo_root = Path(__file__).resolve().parents[2]
 sys.path.insert(0, repo_root.as_posix())
 
-with open(repo_root / "pyproject.toml", "r", encoding="utf-8") as f:
-    pyproject = tomlkit.load(f)  # use tomlkit to load
+pyproject = toml.load(repo_root / "pyproject.toml")
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
