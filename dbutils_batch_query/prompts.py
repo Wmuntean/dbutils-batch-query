@@ -30,7 +30,7 @@ The module supports recursive loading of all markdown templates in a directory a
 .. Note::
     - Templates must use the ``.md`` extension and be compatible with Jinja2 syntax.
 
-.. currentmodule:: prompts
+.. currentmodule:: dbutils_batch_query.prompts
 
 Functions
 =========

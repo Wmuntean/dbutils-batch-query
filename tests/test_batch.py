@@ -17,7 +17,7 @@ This module contains unit tests for the ``batch_model_query`` function in the
 ensuring that the batch processing logic, concurrency, and result formatting are correct
 without requiring real API credentials or network access.
 
-.. currentmodule:: model_query
+.. currentmodule:: dbutils_batch_query.model_query
 
 Tested Functions
 ================
@@ -212,7 +212,10 @@ async def test_batch_model_query_error(monkeypatch):
     prompts = [{"system": "You are a helpful assistant.", "user": "Trigger error."}]
 
     results = await batch_model_query(
-        prompt_info=prompts, model="gpt-err", batch_size=1, max_concurrent_requests=1
+        prompt_info=prompts,
+        model="databricks-llama-4-maverick-err",
+        batch_size=1,
+        max_concurrent_requests=1,
     )
 
     assert isinstance(results, list)

@@ -88,7 +88,7 @@ html_theme_options = {
 # Define the relative collection paths
 collections_config = {
     "notebooks": {
-        "source": "nclex_forecast/notebooks",
+        "source": f"{project}/notebooks",
         "target": "notebooks",
         "ignore": ["*.py", "__pycache__"],
     },

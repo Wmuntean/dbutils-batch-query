@@ -16,54 +16,56 @@
 # ====================================================================
 
 """
-
 =======================================================
 dbutils_batch_query
 =======================================================
 
-This module provides functionality to manage batch queries and environment configuration for Databricks utilities.
+This package provides a unified interface for batch querying, prompt management,
+and environment configuration for Databricks utilities and LLM-powered workflows.
 
-Environment Variable Loading
-============================
+Project Overview
+================
 
-The environment variables are loaded from a `.env` file located in the current working directory (where the user imports this package). This allows for flexible configuration without hardcoding sensitive information.
+`dbutils_batch_query` is designed to streamline the process of running batch queries against Databricks
+and managing prompt templates for LLM applications. It supports environment configuration via `.env` files,
+modular prompt loading, and utilities for extracting and processing model outputs.
+
+Key Features
+============
+
+1. **Batch Model Querying**:
+
+   - Efficiently submit and manage batch queries to Databricks or LLM endpoints.
+   - Includes error handling and default return structures for robust workflows.
+
+2. **Prompt Management**:
+
+   - Load, organize, and retrieve prompt templates for LLM applications.
+   - Supports flexible prompt storage and retrieval patterns.
+
+3. **Environment Configuration**:
+
+   - Loads environment variables from a `.env` file in the current working directory.
+   - Checks if running in a Databricks Notebook and loads credentials from workspace automatically.
 
 .. Note::
-    - The `.env` file should define ``DATABRICKS_TOKEN`` and ``DATABRICKS_HOST``.
-
-.. Important::
-    - Ensure the `.env` file is present in the directory where your script is executed.
+    - The `.env` file should define ``DATABRICKS_TOKEN`` and ``DATABRICKS_HOST`` for Databricks API access.
+    - Ensure the `.env` file is present in the directory where your script is executed unless set globally.
 
 .. currentmodule:: dbutils_batch_query
 
-Functions
-=========
+Modules
+=======
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-    :template: function_name_only.rst
+.. automodule:: dbutils_batch_query.model_query
+    :no-members:
+    :no-inherited-members:
+    :no-special-members:
 
-    __get_package_version
-    __getattr__
-
-Standalone Execution
-=====================
-When run as a standalone script, this module processes Databricks batch queries and outputs the results to the configured endpoints.
-
-- Output Files:
-    - ``output_file1``
-    - ``output_file2``
-
-.. Note::
-   The following paths must be correctly set within the script's ``__main__`` block for successful
-   execution:
-
-   - ``dir_path``: Defines the working directory for batch queries.
-
-.. code-block:: bash
-
-    python -m dbutils_batch_query
+.. automodule:: dbutils_batch_query.prompts
+    :no-members:
+    :no-inherited-members:
+    :no-special-members:
 """
 
 __author__ = "William Muntean"

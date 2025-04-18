@@ -231,5 +231,5 @@ if args.use_poetry:
 
 # Write final toml
 with open(poetry_file, "w", encoding="utf-8") as f:
-    f.write(tomlkit.dumps(toml_data))  # use tomlkit to dump
+    f.write(tomlkit.dumps(toml_data))
 print(f"`pyproject.toml` updated at {poetry_file}")
