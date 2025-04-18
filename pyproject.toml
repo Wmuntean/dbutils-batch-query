@@ -9,7 +9,7 @@ description = "Batch query databricks foundation LLM models"
 authors = [{ name = "William Muntean", email = "williamjmuntean@gmail.com" }]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.12,<4.0"
+requires-python = ">=3.11,<4.0"
 classifiers = ["Intended Audience :: Science/Research"]
 dependencies = ["Jinja2~=3.1.6", "ipython~=9.0.2", "json_repair~=0.40.0", "openai~=1.69.0", "pandas~=2.2.3", "pytest~=8.3.5", "python-dotenv~=1.1.0", "tomlkit~=0.13.2", "toml~=0.10.2", "tqdm~=4.66.4"]
 
