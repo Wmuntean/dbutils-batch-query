@@ -1,10 +1,10 @@
 # dbutils-batch-query
 
-Batch query databricks foundation LLM models
+Batch query databricks foundation LLM models asynchronously.
 
 ## Project Overview
 
-[Insert project overview]
+This project provides utilities to interact with Databricks foundation language models efficiently. It allows for batch querying of models, handling prompt templating using Jinja2, processing model responses, and managing results with robust error handling and metadata tracking. Key features include asynchronous API calls for improved throughput, rate limiting, and saving intermediate/final results.
 
 ## Installation
 
@@ -53,88 +53,158 @@ print(dbutils_batch_query.__version__)
 
 - API documentation is available at https://Wmuntean.github.io/dbutils_batch_query/
 
-
-
-
-## Tests
-
-To run the tests:
-
-```bash
-pytest
-```
-
-
 ## Usage
 
-```python
-import dbutils_batch_query
+This package provides functions for querying Databricks models in batches and managing prompt templates.
+<!-- batch_model_query -->
+### Batch Model Querying
 
-# Basic usage example
-print(f"{{ project_name }} version: {{{ project_name }}.__version__}")
+The `dbutils_batch_query.model_query.batch_model_query` function allows you to send multiple prompts to a specified model asynchronously.
+
+#### Running in a Notebook
+```python
+from dbutils_batch_query.model_query import (
+    batch_model_query,
+    extract_json_items,
+    with_default_return,
+)
+from dbutils_batch_query.prompts import load_prompt
+
+# Example prompt information (replace with your actual prompts)
+prompt_info = [
+    {
+        "system": "You are an assistant that extracts key information.",
+        "user": load_prompt(
+            "path/to/your/prompt_template.md", input_text="Some text to analyze."
+        ),
+        "id": "query_1",  # Optional: Add identifiers or other metadata
+    },
+    {
+        "system": "You are an assistant that summarizes text.",
+        "user": load_prompt(
+            "path/to/your/summary_template.md",
+            document="Another document to summarize.",
+        ),
+        "id": "query_2",
+    },
+]
+
+results = await batch_model_query(
+    prompt_info=prompt_info,
+    model="databricks-dbrx-instruct",  # Specify your Databricks model endpoint
+    process_func=extract_json_items,  # Optional: function to process raw text response
+    batch_size=5,
+    max_concurrent_requests=3,
+    results_path="output_results/",  # Optional: path to save results
+    run_name="my_batch_run",  # Optional: identifier for the run
+    # token and host are automatically fetched from environment or dbutils if not provided
+)
+
+# Process results
+for result in results:
+    if result["error"]:
+        print(f"Error processing prompt {result.get('id', 'N/A')}: {result['error']}")
+    else:
+        print(f"Result for prompt {result.get('id', 'N/A')}:")
+        # Access raw message or processed response
+        # print(result["message"])
+        print(result["processed_response"])
 ```
 
-<!-- data_import -->
-### Data Import Module
-
-The `dbutils_batch_query.data_import` module provides utilities for loading and preprocessing data from various sources.
-
+#### Running in a Python File
 ```python
-from dbutils_batch_query.data_import import load_csv, clean_data, transform_data
-
-# Load data from a CSV file
-df = load_csv("path/to/data.csv", date_cols=["date_column"])
-
-# Clean the data
-cleaned_df = clean_data(df, drop_duplicates=True, fill_na={"numeric_column": 0})
-
-# Transform the data
-transformed_df = transform_data(
-    cleaned_df,
-    normalize_cols=["numeric_feature"],
-    categorical_cols=["category_column"]
+import asyncio
+from dbutils_batch_query.model_query import (
+    batch_model_query,
+    extract_json_items,
+    with_default_return,
 )
+from dbutils_batch_query.prompts import load_prompt
+
+# Example prompt information (replace with your actual prompts)
+prompt_info = [
+    {
+        "system": "You are an assistant that extracts key information.",
+        "user": load_prompt(
+            "path/to/your/prompt_template.md", input_text="Some text to analyze."
+        ),
+        "id": "query_1",  # Optional: Add identifiers or other metadata
+    },
+    {
+        "system": "You are an assistant that summarizes text.",
+        "user": load_prompt(
+            "path/to/your/summary_template.md",
+            document="Another document to summarize.",
+        ),
+        "id": "query_2",
+    },
+]
+
+results = asyncio.run(
+    batch_model_query(
+        prompt_info=prompt_info,
+        model="databricks-dbrx-instruct",  # Specify your Databricks model endpoint
+        process_func=extract_json_items,  # Optional: function to process raw text response
+        batch_size=5,
+        max_concurrent_requests=3,
+        results_path="output_results/",  # Optional: path to save results
+        run_name="my_batch_run",  # Optional: identifier for the run
+        # token and host are automatically fetched from environment or dbutils if not provided
+    )
+)
+
+# Process results
+for result in results:
+    if result["error"]:
+        print(f"Error processing prompt {result.get('id', 'N/A')}: {result['error']}")
+    else:
+        print(f"Result for prompt {result.get('id', 'N/A')}:")
+        # Access raw message or processed response
+        # print(result["message"])
+        print(result["processed_response"])
+
 ```
 
 Key features:
-- Load data from CSV and Excel files with automatic date parsing
-- Clean datasets by handling missing values and duplicates
-- Transform data with normalization, log transformations, and categorical encoding
-<!-- module_name 1 -->
+- Asynchronous processing of multiple prompts.
+- Configurable batch size and concurrency limits.
+- Optional response processing function.
+- Automatic handling of Databricks token and host (via environment variables or `dbutils` in Databricks Notebook).
+- Saves intermediate and final results (pickle and parquet formats) if `results_path` and `run_name` are provided.
+- Detailed metadata included in results (timing, token usage, errors).
 
-<!-- module_name 2 -->
-### Statistical Analysis
+### Prompt Template Management
 
-The `dbutils_batch_query.example_analysis` module provides statistical analysis functions.
+The `dbutils_batch_query.prompts` module helps manage Jinja2 prompt templates.
+
+**Load all templates from a directory:**
 
 ```python
-import pandas as pd
-from dbutils_batch_query.example_analysis import descriptive_stats, correlation_analysis, time_series_analysis
+from dbutils_batch_query.prompts import load_all
 
-# Create or load your DataFrame
-df = pd.DataFrame({...})
+# Load all .md templates from the specified directory
+prompt_templates = load_all("path/to/prompt_templates/")
 
-# Get descriptive statistics
-stats_df, plots = descriptive_stats(df)
-print(stats_df)
+# Access a specific template
+template = prompt_templates["my_template_name"] # Key is the filename stem
 
-# Perform correlation analysis
-corr_df, heatmap = correlation_analysis(df, method='pearson', threshold=0.3)
-print(corr_df)
-
-# Time series analysis for data with a datetime index
-ts_data = pd.Series([...], index=pd.date_range(...))
-results, plots = time_series_analysis(ts_data, seasonal=True)
+# Render the template (if needed, though batch_model_query handles rendering internally via load_prompt)
+# rendered = template.render(variable="value")
 ```
 
-Key capabilities:
-- Compute descriptive statistics with distribution visualization
-- Analyze correlations between variables with customizable heatmaps
-- Run statistical tests including t-tests with visual interpretation
-- Perform time series decomposition and basic forecasting
-<!-- end modules -->
+**Load and render a single template:**
 
+```python
+from dbutils_batch_query.prompts import load_prompt
 
+# Load and render a template file with arguments
+rendered_prompt = load_prompt(
+    "path/to/prompt_templates/my_template_name.md",
+    input_text="Some dynamic content for the prompt."
+)
+
+print(rendered_prompt)
+```
 
 ## Contributors
 - [@Wmuntean](https://github.com/Wmuntean)

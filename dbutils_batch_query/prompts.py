@@ -2,11 +2,11 @@
 # Author: William Muntean
 # Copyright (C) 2025 William Muntean. All rights reserved.
 #
-# Licensed under the GPL v3 License;
+# Licensed under the MIT License;
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://opensource.org/licenses/GPL v3
+#     http://opensource.org/licenses/MIT
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,34 @@
 # limitations under the License.
 # ====================================================================
 
-""" """
+"""
+=======================================================
+prompts
+=======================================================
+
+This module provides utilities for loading and rendering Jinja2-based markdown prompt templates from directories or files.
+
+Prompt Template Loading and Rendering
+=====================================
+
+The module supports recursive loading of all markdown templates in a directory and rendering individual templates with custom arguments.
+
+.. Note::
+    - Templates must use the ``.md`` extension and be compatible with Jinja2 syntax.
+
+.. currentmodule:: prompts
+
+Functions
+=========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+    :template: function_name_only.rst
+
+    load_all
+    load_prompt
+"""
 
 __author__ = "William Muntean"
 __email__ = "williamjmuntean@gmail.com"

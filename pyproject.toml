@@ -11,14 +11,18 @@ license = "MIT"
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
 classifiers = ["Intended Audience :: Science/Research"]
+dependencies = ["Jinja2~=3.1.6", "ipython~=9.0.2", "json_repair~=0.40.0", "openai~=1.69.0", "pandas~=2.2.3", "pytest~=8.3.5", "python-dotenv~=1.1.0", "tomlkit~=0.13.2", "toml~=0.10.2", "tqdm~=4.66.4"]
 
 [project.optional-dependencies]
 dev = [
     "poetry>=2.1.2",
     "poetry-plugin-export>=1.9.0",
     "poetry-dynamic-versioning>=1.8.2",
+    "tomlkit>=0.13.2",
+    "pigar>=2.1.7",
     "ruff>=0.11.6",
     "pytest>=8.3.5",
+    "pytest-asyncio>=0.26",
     "numpydoc>=1.8",
     "sphinx-copybutton>=0.5",
     "myst-parser>=4.0.1",
@@ -31,9 +35,7 @@ homepage = "https://github.com/Wmuntean"
 repository = "https://github.com/Wmuntean/dbutils-batch-query.git"
 
 [tool.poetry]
-packages = [
-    { include = "dbutils_batch_query" }
-]
+packages = [{ include = "dbutils_batch_query" }]
 version = "0.0.0"
 
 [tool.poetry-dynamic-versioning]
@@ -44,8 +46,6 @@ style = "pep440"
 [tool.poetry.requires-plugins]
 poetry-plugin-export = ">=1.8"
 poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
-
-
 
 
 [tool.ruff.format]
