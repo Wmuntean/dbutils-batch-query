@@ -1,0 +1,60 @@
+[build-system]
+requires = ["poetry-core", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[project]
+name = "dbutils_batch_query"
+dynamic = ["version"]
+description = "Batch query databricks foundation LLM models"
+authors = [{ name = "William Muntean", email = "williamjmuntean@gmail.com" }]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+classifiers = ["Intended Audience :: Science/Research"]
+
+[project.optional-dependencies]
+dev = [
+    "poetry>=2.1.2",
+    "poetry-plugin-export>=1.9.0",
+    "poetry-dynamic-versioning>=1.8.2",
+    "ruff>=0.11.6",
+    "pytest>=8.3.5",
+    "numpydoc>=1.8",
+    "sphinx-copybutton>=0.5",
+    "myst-parser>=4.0.1",
+    "nbsphinx>=0.9.7",
+    "pydata-sphinx-theme>=0.16.1",
+]
+
+[project.urls]
+homepage = "https://github.com/Wmuntean"
+repository = "https://github.com/Wmuntean/dbutils-batch-query.git"
+
+[tool.poetry]
+packages = [
+    { include = "dbutils_batch_query" }
+]
+version = "0.0.0"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+source = "scm"
+style = "pep440"
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+
+
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 60
+
+[tool.ruff.lint]
+ignore = ["F841"]
+extend-select = ["I"]
+
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = ["E402"]

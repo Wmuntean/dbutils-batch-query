@@ -1,0 +1,11 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v0.1.5-1-gf03540f
+_src_path: https://github.com/Wmuntean/package-template.git
+include_cli: false
+include_tests: true
+is_private_repo: false
+license: MIT
+project_description: Batch query databricks foundation LLM models
+project_name: dbutils_batch_query
+repo_name: dbutils-batch-query
+use_organization: false
