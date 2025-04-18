@@ -2,11 +2,11 @@
 # Author: William Muntean
 # Copyright (C) 2025 William Muntean. All rights reserved.
 #
-# Licensed under the GPL v3 License;
+# Licensed under the MIT License;
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://opensource.org/licenses/GPL v3
+#     http://opensource.org/licenses/MIT
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ====================================================================
+
 
 """
 =======================================================
@@ -98,6 +99,8 @@ import pandas as pd
 from json_repair import repair_json
 from openai import AsyncOpenAI
 from tqdm.asyncio import tqdm
+
+from .utils.secrets import get_databricks_secrets
 
 F = TypeVar("F", bound=Callable[..., Dict[str, Any]])
 
@@ -309,7 +312,6 @@ async def _get_response(
             execution_time = time.perf_counter() - start_time
             metadata["timing"] = round(execution_time, 3)
 
-
             # Update model info with version number
             if hasattr(chat_completion, "model"):
                 metadata["model"] = chat_completion.model
@@ -356,7 +358,6 @@ async def _get_response(
 async def batch_model_query(
     *,
     prompt_info: list[dict],
-    client: AsyncOpenAI,
     model: str,
     process_func: callable = None,
     process_func_params: dict = None,
@@ -365,65 +366,104 @@ async def batch_model_query(
     results_path: str | Path = None,
     run_name: str | Path = None,
     model_params: dict = None,
+    token: str = None,
+    host: str = None,
+    **kwargs,
 ) -> list[dict]:
     """
-    Asynchronously processes a batch of prompts using a language model client,
-    saves intermediate results, and handles concurrent API requests.
+    Asynchronously process a batch of prompts using a language model client, saving intermediate and final results,
+    and handling concurrent API requests with robust error handling and metadata tracking.
+
+    This function orchestrates the batch processing pipeline for querying language models. It divides the input prompts
+    into batches, manages concurrency, applies optional post-processing, and saves results in both pickle and parquet formats.
+    Intermediate results are saved after each batch for fault tolerance, and final results are consolidated at the end.
 
     Parameters
     ----------
     prompt_info : list of dict
-        List of dictionaries containing prompt information, each with 'system' and 'user' keys.
-    client : AsyncOpenAI
-        The asynch OpenAI client instance used to interact with the language model.
+        List of dictionaries containing prompt information, each with ``system`` and ``user`` keys.
     model : str
         The name or identifier of the language model to use.
-    process_func : callable or None, optional
-        The function to process each response. If None, raw message content is returned
-        in the 'message' field. Default is None.
+    process_func : callable, optional
+        Function to process each response. If None, raw message content is returned in the ``message`` field.
+        Default is ``None``.
     process_func_params : dict, optional
-        Parameters to pass to the process_func. Ignored if process_func is None.
-        Default is None.
+        Parameters to pass to ``process_func``. Ignored if ``process_func`` is None. Default is ``None``.
     batch_size : int, optional
-        Number of prompts to process between intermittent saves. Default is 10.
+        Number of prompts to process between intermittent saves. Default is ``10``.
     max_concurrent_requests : int, optional
-        Maximum number of concurrent API requests allowed. Default is 5.
+        Maximum number of concurrent API requests allowed. Default is ``5``.
     results_path : str or Path, optional
-        Path to save intermediate and final result files. If None, results are not saved.
-        Default is None.
+        Path to save intermediate and final result files. If None, results are not saved. Default is ``None``.
     run_name : str or Path, optional
-        Name used to identify this batch run in saved files. Required if results_path is provided.
-        Default is None.
+        Name used to identify this batch run in saved files. Required if ``results_path`` is provided. Default is ``None``.
     model_params : dict, optional
         Dictionary of model parameters to override defaults. Supported keys:
-        - max_tokens: Maximum tokens for completion (default: 2048)
-        - temperature: Sampling temperature (default: 0)
+        - ``max_tokens``: Maximum tokens for completion (default: 2048)
+        - ``temperature``: Sampling temperature (default: 0)
+        Default is ``None``.
+    token : str, optional
+        API token for authentication. If not provided, will be loaded from environment or Databricks context.
+    host : str, optional
+        API host URL. If not provided, will be loaded from environment or Databricks context.
 
     Returns
     -------
     list of dict
-        A list of dictionaries containing the responses and their details.
-        Each dictionary includes:
+        A list of dictionaries, each containing the response and associated metadata for a prompt. Each dictionary includes:
 
-        - If process_func is provided: processed data in the 'processed_response' field
-        - Raw message content in the 'message' field
-        - Original prompt information from prompt_info
-        - Full API response in the 'chat' field (or None on error)
-        - Error information in the 'error' field (or None on success)
-        - Metadata including model parameters and usage statistics
+        - ``message``: Raw response content from the model.
+        - ``processed_response``: Processed content if ``process_func`` is provided.
+        - ``chat``: Full API response object (or ``None`` on error).
+        - ``error``: Error message if an exception occurred, ``None`` otherwise.
+        - ``model``: Model name used for generation.
+        - ``temperature``: Temperature setting used for generation.
+        - ``max_tokens``: Maximum tokens setting used.
+        - ``prompt_tokens``: Number of tokens in the prompt (if available).
+        - ``completion_tokens``: Number of tokens in the completion (if available).
+        - ``total_tokens``: Total number of tokens used (if available).
+        - ``timing``: Query execution time in seconds.
+        - All original keys from the corresponding entry in ``prompt_info``.
+
 
     .. Note::
-        When process_func is None, the function returns the raw message content in the
-        'message' field, without any additional processing.
+        - When ``process_func`` is None, the function returns the raw message content in the ``message`` field.
+        - After each batch, results (including ``chat`` objects) are saved as pickle files, and a version without the ``chat`` key is saved as a parquet file.
+        - Intermediate results are saved in a subdirectory named after ``run_name``; final results are saved in ``results_path``.
+        - Intermediate files are deleted after successful completion.
 
-    .. Note::
-        File saving behavior:
-        - After each batch, complete results (including 'chat' objects) are saved as pickle files
-        - A version without the 'chat' key is also saved as a parquet file for easy analysis
-        - Intermediate result files are saved in a subdirectory named after run_name
-        - Final results are saved directly in the results_path directory
-        - Intermediate files are deleted after successful completion
+    .. Warning::
+        - Ensure that ``token`` and ``host`` are set, either via arguments, environment variables, env dotfile, or Databricks context.
+        - If ``results_path`` is provided, ``run_name`` must also be specified.
+
+    Examples
+    --------
+    >>> results = await batch_model_query(
+    ...     prompt_info=[
+    ...         {
+    ...             "system": "You are a helpful assistant.",
+    ...             "user": "Hello!",
+    ...         }
+    ...     ],
+    ...     model="gpt-3.5-turbo",
+    ...     process_func=my_process_func,
+    ...     batch_size=5,
+    ...     max_concurrent_requests=2,
+    ...     results_path="results/",
+    ...     run_name="test_run",
+    ... )
+    >>> print(results[0]["message"])
+    "Hi! How can I assist you today?"
     """
+
+    if not token and not host:
+        token, host = get_databricks_secrets()
+
+    client = AsyncOpenAI(
+        api_key=token,
+        base_url=f"{host}/serving-endpoints",
+    )
+
     wrapped_process_func = None
     if process_func is not None and process_func_params is not None:
         wrapped_process_func = functools.partial(process_func, **process_func_params)
