@@ -1,5 +1,10 @@
 # dbutils-batch-query
 
+![Python Versions](https://img.shields.io/badge/python-3.11%20|%203.12-blue)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+![Build Status](https://github.com/Wmuntean/NCLEX-forecast/actions/workflows/python-test.yml/badge.svg)
+
+
 Batch query databricks foundation LLM models asynchronously.
 
 ## Project Overview
