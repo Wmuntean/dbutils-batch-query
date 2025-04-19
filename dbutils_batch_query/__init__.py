@@ -126,7 +126,7 @@ def __getattr__(name: str) -> Any:
 # ==================================================================
 # Load env secrets
 # ==================================================================
-load_dotenv(dotenv_path=Path.cwd() / ".env", override=False)
+load_dotenv(override=False)
 
 from .model_query import (  # noqa: E402
     batch_model_query,
