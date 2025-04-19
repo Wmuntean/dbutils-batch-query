@@ -175,7 +175,7 @@ Key features:
 
 ### Prompt Template Management
 
-The [`prompts`}(#dbutils_batch_query.prompts) module helps manage Jinja2 prompt templates.
+The [`prompts`](#dbutils_batch_query.prompts) module helps manage Jinja2 prompt templates.
 
 **Load all templates from a directory:**
 
