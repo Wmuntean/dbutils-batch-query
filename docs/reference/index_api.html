@@ -421,7 +421,7 @@ Loads a single prompt with jinja rendering.</p></li>
 
 <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">batch_model_query</span><span class="p">(</span>
     <span class="n">prompt_info</span><span class="o">=</span><span class="n">prompt_info</span><span class="p">,</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;databricks-dbrx-instruct&quot;</span><span class="p">,</span>  <span class="c1"># Specify your Databricks model endpoint</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;databricks-llama-4-maverick&quot;</span><span class="p">,</span>  <span class="c1"># Specify your Databricks model endpoint</span>
     <span class="n">process_func</span><span class="o">=</span><span class="n">extract_json_items</span><span class="p">,</span>  <span class="c1"># Optional: function to process raw text response</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
     <span class="n">max_concurrent_requests</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
@@ -474,7 +474,7 @@ Loads a single prompt with jinja rendering.</p></li>
 <span class="n">results</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
     <span class="n">batch_model_query</span><span class="p">(</span>
         <span class="n">prompt_info</span><span class="o">=</span><span class="n">prompt_info</span><span class="p">,</span>
-        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;databricks-dbrx-instruct&quot;</span><span class="p">,</span>  <span class="c1"># Specify your Databricks model endpoint</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;databricks-llama-4-maverick&quot;</span><span class="p">,</span>  <span class="c1"># Specify your Databricks model endpoint</span>
         <span class="n">process_func</span><span class="o">=</span><span class="n">extract_json_items</span><span class="p">,</span>  <span class="c1"># Optional: function to process raw text response</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
         <span class="n">max_concurrent_requests</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>

@@ -91,7 +91,7 @@ prompt_info = [
 
 results = await batch_model_query(
     prompt_info=prompt_info,
-    model="databricks-dbrx-instruct",  # Specify your Databricks model endpoint
+    model="databricks-llama-4-maverick",  # Specify your Databricks model endpoint
     process_func=extract_json_items,  # Optional: function to process raw text response
     batch_size=5,
     max_concurrent_requests=3,
@@ -143,7 +143,7 @@ prompt_info = [
 results = asyncio.run(
     batch_model_query(
         prompt_info=prompt_info,
-        model="databricks-dbrx-instruct",  # Specify your Databricks model endpoint
+        model="databricks-llama-4-maverick",  # Specify your Databricks model endpoint
         process_func=extract_json_items,  # Optional: function to process raw text response
         batch_size=5,
         max_concurrent_requests=3,
