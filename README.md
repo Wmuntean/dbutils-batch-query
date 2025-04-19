@@ -56,7 +56,7 @@ print(dbutils_batch_query.__version__)
 ## Documentation
 
 
-- API documentation is available at [Wmuntean GitHub Pages](https://wmuntean.github.io/dbutils-batch-query/).
+- API documentation is available at [Documentation](https://wmuntean.github.io/dbutils-batch-query/).
 
 ## Usage
 
