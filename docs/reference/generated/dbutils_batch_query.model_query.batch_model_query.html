@@ -1,0 +1,643 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>batch_model_query &#8212; dbutils_batch_query 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/wordwrap.css?v=c9d0a6ec" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/generated/dbutils_batch_query.model_query.batch_model_query';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Prompts" href="../prompts.html" />
+    <link rel="prev" title="extract_json_items" href="dbutils_batch_query.model_query.extract_json_items.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.0" />
+    <meta name="docbuild:last-update" content="Apr 18, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">dbutils_batch_query</p>
+  
+</a></div>
+    
+      <div class="navbar-item"><!-- This will display the version of the docs -->
+0.1.0
+<!-- Release 0.1.0 --></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index_api.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Wmuntean/dbutils-batch-query.git" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index_api.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Wmuntean/dbutils-batch-query.git" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../model_query.html">Model Query</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dbutils_batch_query.model_query.with_default_return.html">with_default_return</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dbutils_batch_query.model_query.extract_json_items.html">extract_json_items</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">batch_model_query</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../prompts.html">Prompts</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index_api.html" class="nav-link">API Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../model_query.html" class="nav-link">Model Query</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">batch_model_query</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="batch-model-query">
+<h1>batch_model_query<a class="headerlink" href="#batch-model-query" title="Link to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="dbutils_batch_query.model_query.batch_model_query">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">batch_model_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_func_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_concurrent_requests</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dbutils_batch_query/model_query.html#batch_model_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbutils_batch_query.model_query.batch_model_query" title="Link to this definition">#</a></dt>
+<dd><p>Asynchronously process a batch of prompts using a language model client, saving intermediate and final results,
+and handling concurrent API requests with robust error handling and metadata tracking.</p>
+<p>This function orchestrates the batch processing pipeline for querying language models. It divides the input prompts
+into batches, manages concurrency, applies optional post-processing, and saves results in both pickle and parquet formats.
+Intermediate results are saved after each batch for fault tolerance, and final results are consolidated at the end.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>prompt_info</strong><span class="classifier">list of dict</span></dt><dd><p>List of dictionaries containing prompt information, each with <code class="docutils literal notranslate"><span class="pre">system</span></code> and <code class="docutils literal notranslate"><span class="pre">user</span></code> keys.</p>
+</dd>
+<dt><strong>model</strong><span class="classifier">str</span></dt><dd><p>The name or identifier of the language model to use.</p>
+</dd>
+<dt><strong>process_func</strong><span class="classifier">callable, optional</span></dt><dd><p>Function to process each response. If None, raw message content is returned in the <code class="docutils literal notranslate"><span class="pre">message</span></code> field.
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt><strong>process_func_params</strong><span class="classifier">dict, optional</span></dt><dd><p>Parameters to pass to <code class="docutils literal notranslate"><span class="pre">process_func</span></code>. Ignored if <code class="docutils literal notranslate"><span class="pre">process_func</span></code> is None. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt><strong>batch_size</strong><span class="classifier">int, optional</span></dt><dd><p>Number of prompts to process between intermittent saves. Default is <code class="docutils literal notranslate"><span class="pre">10</span></code>.</p>
+</dd>
+<dt><strong>max_concurrent_requests</strong><span class="classifier">int, optional</span></dt><dd><p>Maximum number of concurrent API requests allowed. Default is <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p>
+</dd>
+<dt><strong>results_path</strong><span class="classifier">str or Path, optional</span></dt><dd><p>Path to save intermediate and final result files. If None, results are not saved. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt><strong>run_name</strong><span class="classifier">str or Path, optional</span></dt><dd><p>Name used to identify this batch run in saved files. Required if <code class="docutils literal notranslate"><span class="pre">results_path</span></code> is provided. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt><strong>model_params</strong><span class="classifier">dict, optional</span></dt><dd><p>Dictionary of model parameters to override defaults. Supported keys:
+- <code class="docutils literal notranslate"><span class="pre">max_tokens</span></code>: Maximum tokens for completion (default: 2048)
+- <code class="docutils literal notranslate"><span class="pre">temperature</span></code>: Sampling temperature (default: 0)
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt><strong>token</strong><span class="classifier">str, optional</span></dt><dd><p>API token for authentication. If not provided, will be loaded from environment or Databricks context.</p>
+</dd>
+<dt><strong>host</strong><span class="classifier">str, optional</span></dt><dd><p>API host URL. If not provided, will be loaded from environment or Databricks context.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of dict</dt><dd><p>A list of dictionaries, each containing the response and associated metadata for a prompt. Each dictionary includes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">message</span></code>: Raw response content from the model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">processed_response</span></code>: Processed content if <code class="docutils literal notranslate"><span class="pre">process_func</span></code> is provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chat</span></code>: Full API response object (or <code class="docutils literal notranslate"><span class="pre">None</span></code> on error).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">error</span></code>: Error message if an exception occurred, <code class="docutils literal notranslate"><span class="pre">None</span></code> otherwise.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: Model name used for generation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code>: Temperature setting used for generation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_tokens</span></code>: Maximum tokens setting used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prompt_tokens</span></code>: Number of tokens in the prompt (if available).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">completion_tokens</span></code>: Number of tokens in the completion (if available).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_tokens</span></code>: Total number of tokens used (if available).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timing</span></code>: Query execution time in seconds.</p></li>
+<li><p>All original keys from the corresponding entry in <code class="docutils literal notranslate"><span class="pre">prompt_info</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>When <code class="docutils literal notranslate"><span class="pre">process_func</span></code> is None, the function returns the raw message content in the <code class="docutils literal notranslate"><span class="pre">message</span></code> field.</p></li>
+<li><p>After each batch, results (including <code class="docutils literal notranslate"><span class="pre">chat</span></code> objects) are saved as pickle files, and a version without the <code class="docutils literal notranslate"><span class="pre">chat</span></code> key is saved as a parquet file.</p></li>
+<li><p>Intermediate results are saved in a subdirectory named after <code class="docutils literal notranslate"><span class="pre">run_name</span></code>; final results are saved in <code class="docutils literal notranslate"><span class="pre">results_path</span></code>.</p></li>
+<li><p>Intermediate files are deleted after successful completion.</p></li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul class="simple">
+<li><p>Ensure that <code class="docutils literal notranslate"><span class="pre">token</span></code> and <code class="docutils literal notranslate"><span class="pre">host</span></code> are set, either via arguments, environment variables, env dotfile, or Databricks context.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">results_path</span></code> is provided, <code class="docutils literal notranslate"><span class="pre">run_name</span></code> must also be specified.</p></li>
+</ul>
+</div>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>The <a class="reference internal" href="#"><span class="doc std std-doc"><code class="docutils literal notranslate"><span class="pre">batch_model_query</span></code></span></a> function allows you to send multiple prompts to a specified model asynchronously.</p>
+<section id="running-in-a-notebook">
+<h2>Running in a Notebook<a class="headerlink" href="#running-in-a-notebook" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dbutils_batch_query.model_query</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">batch_model_query</span><span class="p">,</span>
+    <span class="n">extract_json_items</span><span class="p">,</span>
+    <span class="n">with_default_return</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dbutils_batch_query.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_prompt</span>
+
+<span class="c1"># Example prompt information (replace with your actual prompts)</span>
+<span class="n">prompt_info</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that extracts key information.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">load_prompt</span><span class="p">(</span>
+            <span class="s2">&quot;path/to/your/prompt_template.md&quot;</span><span class="p">,</span> <span class="n">input_text</span><span class="o">=</span><span class="s2">&quot;Some text to analyze.&quot;</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;query_1&quot;</span><span class="p">,</span>  <span class="c1"># Optional: Add identifiers or other metadata</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that summarizes text.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">load_prompt</span><span class="p">(</span>
+            <span class="s2">&quot;path/to/your/summary_template.md&quot;</span><span class="p">,</span>
+            <span class="n">document</span><span class="o">=</span><span class="s2">&quot;Another document to summarize.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;query_2&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">batch_model_query</span><span class="p">(</span>
+    <span class="n">prompt_info</span><span class="o">=</span><span class="n">prompt_info</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;databricks-dbrx-instruct&quot;</span><span class="p">,</span>  <span class="c1"># Specify your Databricks model endpoint</span>
+    <span class="n">process_func</span><span class="o">=</span><span class="n">extract_json_items</span><span class="p">,</span>  <span class="c1"># Optional: function to process raw text response</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">max_concurrent_requests</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">results_path</span><span class="o">=</span><span class="s2">&quot;output_results/&quot;</span><span class="p">,</span>  <span class="c1"># Optional: path to save results</span>
+    <span class="n">run_name</span><span class="o">=</span><span class="s2">&quot;my_batch_run&quot;</span><span class="p">,</span>  <span class="c1"># Optional: identifier for the run</span>
+    <span class="c1"># token and host are automatically fetched from environment or dbutils if not provided</span>
+<span class="p">)</span>
+
+<span class="c1"># Process results</span>
+<span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error processing prompt </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Result for prompt </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+        <span class="c1"># Access raw message or processed response</span>
+        <span class="c1"># print(result[&quot;message&quot;])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;processed_response&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="running-in-a-python-file">
+<h2>Running in a Python File<a class="headerlink" href="#running-in-a-python-file" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dbutils_batch_query.model_query</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">batch_model_query</span><span class="p">,</span>
+    <span class="n">extract_json_items</span><span class="p">,</span>
+    <span class="n">with_default_return</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dbutils_batch_query.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_prompt</span>
+
+<span class="c1"># Example prompt information (replace with your actual prompts)</span>
+<span class="n">prompt_info</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that extracts key information.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">load_prompt</span><span class="p">(</span>
+            <span class="s2">&quot;path/to/your/prompt_template.md&quot;</span><span class="p">,</span> <span class="n">input_text</span><span class="o">=</span><span class="s2">&quot;Some text to analyze.&quot;</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;query_1&quot;</span><span class="p">,</span>  <span class="c1"># Optional: Add identifiers or other metadata</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that summarizes text.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">load_prompt</span><span class="p">(</span>
+            <span class="s2">&quot;path/to/your/summary_template.md&quot;</span><span class="p">,</span>
+            <span class="n">document</span><span class="o">=</span><span class="s2">&quot;Another document to summarize.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;query_2&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">batch_model_query</span><span class="p">(</span>
+        <span class="n">prompt_info</span><span class="o">=</span><span class="n">prompt_info</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;databricks-dbrx-instruct&quot;</span><span class="p">,</span>  <span class="c1"># Specify your Databricks model endpoint</span>
+        <span class="n">process_func</span><span class="o">=</span><span class="n">extract_json_items</span><span class="p">,</span>  <span class="c1"># Optional: function to process raw text response</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">max_concurrent_requests</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">results_path</span><span class="o">=</span><span class="s2">&quot;output_results/&quot;</span><span class="p">,</span>  <span class="c1"># Optional: path to save results</span>
+        <span class="n">run_name</span><span class="o">=</span><span class="s2">&quot;my_batch_run&quot;</span><span class="p">,</span>  <span class="c1"># Optional: identifier for the run</span>
+        <span class="c1"># token and host are automatically fetched from environment or dbutils if not provided</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Process results</span>
+<span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error processing prompt </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Result for prompt </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+        <span class="c1"># Access raw message or processed response</span>
+        <span class="c1"># print(result[&quot;message&quot;])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;processed_response&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="dbutils_batch_query.model_query.extract_json_items.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">extract_json_items</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../prompts.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Prompts</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, William Muntean.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__center">
+      
+        <div class="footer-item"><p class="last-updated">
+  Last updated on Apr 18, 2025.
+  <br/>
+</p></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

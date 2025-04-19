@@ -86,26 +86,26 @@ html_theme_options = {
 }
 
 # Define the relative collection paths
-collections_config = {
-    "notebooks": {
-        "source": f"{project}/notebooks",
-        "target": "notebooks",
-        "ignore": ["*.py", "__pycache__"],
-    },
-    "assets": {
-        "source": "assets",
-        "target": "assets",
-        "ignore": ["*.gitkeep"],
-    },
-}
+# collections_config = {
+#     "notebooks": {
+#         "source": f"{project}/notebooks",
+#         "target": "notebooks",
+#         "ignore": ["*.py", "__pycache__"],
+#     },
+#     "assets": {
+#         "source": "assets",
+#         "target": "assets",
+#         "ignore": ["*.gitkeep"],
+#     },
+# }
 
-# Copy everything before Sphinx build
-copy_collections(
-    collections_config,
-    source_base=repo_root,
-    target_base=sphinx_source,
-    verbose=True,
-)
+# # Copy everything before Sphinx build
+# copy_collections(
+#     collections_config,
+#     source_base=repo_root,
+#     target_base=sphinx_source,
+#     verbose=True,
+# )
 
 
 # Set callback

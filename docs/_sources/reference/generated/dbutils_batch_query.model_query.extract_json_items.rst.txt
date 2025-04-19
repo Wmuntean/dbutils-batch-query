@@ -1,0 +1,4 @@
+﻿extract\_json\_items
+====================
+
+.. autofunction:: dbutils_batch_query.model_query.extract_json_items

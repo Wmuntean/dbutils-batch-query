@@ -1,0 +1,4 @@
+﻿batch\_model\_query
+===================
+
+.. autofunction:: dbutils_batch_query.model_query.batch_model_query

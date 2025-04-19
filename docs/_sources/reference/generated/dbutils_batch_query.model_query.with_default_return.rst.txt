@@ -1,0 +1,4 @@
+﻿with\_default\_return
+=====================
+
+.. autofunction:: dbutils_batch_query.model_query.with_default_return
