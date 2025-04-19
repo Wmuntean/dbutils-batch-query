@@ -68,24 +68,21 @@ The [`batch_model_query`](#dbutils_batch_query.model_query.batch_model_query) fu
 
 #### Running in a Notebook
 ```python
-from dbutils_batch_query.model_query import (
-    batch_model_query,
-    extract_json_items,
-    with_default_return,
-)
+from dbutils_batch_query.model_query import batch_model_query, extract_json_items
 from dbutils_batch_query.prompts import load_prompt
 
+user_prompt = load_prompt(
+    "path/to/your/prompt_template.md", input_text="Some text to analyze."
+)
 # Example prompt information (replace with your actual prompts)
 prompt_info = [
     {
-        "system": "You are an assistant that extracts key information.",
-        "user": load_prompt(
-            "path/to/your/prompt_template.md", input_text="Some text to analyze."
-        ),
+        "system": "You are an assistant that extracts key information. Respond in a JSON codeblock.",
+        "user": user_prompt,
         "id": "query_1",  # Optional: Add identifiers or other metadata
     },
     {
-        "system": "You are an assistant that summarizes text.",
+        "system": "You are an assistant that summarizes text. Respond in a JSON codeblock.",
         "user": load_prompt(
             "path/to/your/summary_template.md",
             document="Another document to summarize.",
@@ -114,6 +111,7 @@ for result in results:
         # Access raw message or processed response
         # print(result["message"])
         print(result["processed_response"])
+
 ```
 
 #### Running in a Python File
@@ -121,22 +119,22 @@ for result in results:
 import asyncio
 from dbutils_batch_query.model_query import (
     batch_model_query,
-    extract_json_items,
-    with_default_return,
+    extract_json_items
 )
 from dbutils_batch_query.prompts import load_prompt
 
+user_prompt = load_prompt(
+    "path/to/your/prompt_template.md", input_text="Some text to analyze."
+)
 # Example prompt information (replace with your actual prompts)
 prompt_info = [
     {
-        "system": "You are an assistant that extracts key information.",
-        "user": load_prompt(
-            "path/to/your/prompt_template.md", input_text="Some text to analyze."
-        ),
+        "system": "You are an assistant that extracts key information. Respond in a JSON codeblock.",
+        "user": user_prompt,
         "id": "query_1",  # Optional: Add identifiers or other metadata
     },
     {
-        "system": "You are an assistant that summarizes text.",
+        "system": "You are an assistant that summarizes text. Respond in a JSON codeblock.",
         "user": load_prompt(
             "path/to/your/summary_template.md",
             document="Another document to summarize.",
@@ -193,7 +191,7 @@ prompt_templates = load_all("path/to/prompt_templates/")
 # Access a specific template
 template = prompt_templates["my_template_name"] # Key is the filename stem
 
-# Render the template (if needed, though batch_model_query handles rendering internally via load_prompt)
+# Render the template
 # rendered = template.render(variable="value")
 ```
 

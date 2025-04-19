@@ -53,7 +53,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1.1" />
-    <meta name="docbuild:last-update" content="Apr 18, 2025"/>
+    <meta name="docbuild:last-update" content="Apr 19, 2025"/>
   </head>
   
   
@@ -384,24 +384,21 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 <p>The <a class="reference internal" href="reference/generated/dbutils_batch_query.model_query.batch_model_query.html#dbutils_batch_query.model_query.batch_model_query" title="dbutils_batch_query.model_query.batch_model_query"><span class="xref myst py py-func"><code class="docutils literal notranslate"><span class="pre">batch_model_query</span></code></span></a> function allows you to send multiple prompts to a specified model asynchronously.</p>
 <section id="running-in-a-notebook">
 <h4>Running in a Notebook<a class="headerlink" href="#running-in-a-notebook" title="Link to this heading">#</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dbutils_batch_query.model_query</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">batch_model_query</span><span class="p">,</span>
-    <span class="n">extract_json_items</span><span class="p">,</span>
-    <span class="n">with_default_return</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dbutils_batch_query.model_query</span><span class="w"> </span><span class="kn">import</span> <span class="n">batch_model_query</span><span class="p">,</span> <span class="n">extract_json_items</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dbutils_batch_query.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_prompt</span>
 
+<span class="n">user_prompt</span> <span class="o">=</span> <span class="n">load_prompt</span><span class="p">(</span>
+    <span class="s2">&quot;path/to/your/prompt_template.md&quot;</span><span class="p">,</span> <span class="n">input_text</span><span class="o">=</span><span class="s2">&quot;Some text to analyze.&quot;</span>
+<span class="p">)</span>
 <span class="c1"># Example prompt information (replace with your actual prompts)</span>
 <span class="n">prompt_info</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that extracts key information.&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">load_prompt</span><span class="p">(</span>
-            <span class="s2">&quot;path/to/your/prompt_template.md&quot;</span><span class="p">,</span> <span class="n">input_text</span><span class="o">=</span><span class="s2">&quot;Some text to analyze.&quot;</span>
-        <span class="p">),</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that extracts key information. Respond in a JSON codeblock.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user_prompt</span><span class="p">,</span>
         <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;query_1&quot;</span><span class="p">,</span>  <span class="c1"># Optional: Add identifiers or other metadata</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that summarizes text.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that summarizes text. Respond in a JSON codeblock.&quot;</span><span class="p">,</span>
         <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">load_prompt</span><span class="p">(</span>
             <span class="s2">&quot;path/to/your/summary_template.md&quot;</span><span class="p">,</span>
             <span class="n">document</span><span class="o">=</span><span class="s2">&quot;Another document to summarize.&quot;</span><span class="p">,</span>
@@ -430,6 +427,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
         <span class="c1"># Access raw message or processed response</span>
         <span class="c1"># print(result[&quot;message&quot;])</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;processed_response&quot;</span><span class="p">])</span>
+
 </pre></div>
 </div>
 </section>
@@ -438,22 +436,22 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dbutils_batch_query.model_query</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">batch_model_query</span><span class="p">,</span>
-    <span class="n">extract_json_items</span><span class="p">,</span>
-    <span class="n">with_default_return</span><span class="p">,</span>
+    <span class="n">extract_json_items</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dbutils_batch_query.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_prompt</span>
 
+<span class="n">user_prompt</span> <span class="o">=</span> <span class="n">load_prompt</span><span class="p">(</span>
+    <span class="s2">&quot;path/to/your/prompt_template.md&quot;</span><span class="p">,</span> <span class="n">input_text</span><span class="o">=</span><span class="s2">&quot;Some text to analyze.&quot;</span>
+<span class="p">)</span>
 <span class="c1"># Example prompt information (replace with your actual prompts)</span>
 <span class="n">prompt_info</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that extracts key information.&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">load_prompt</span><span class="p">(</span>
-            <span class="s2">&quot;path/to/your/prompt_template.md&quot;</span><span class="p">,</span> <span class="n">input_text</span><span class="o">=</span><span class="s2">&quot;Some text to analyze.&quot;</span>
-        <span class="p">),</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that extracts key information. Respond in a JSON codeblock.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user_prompt</span><span class="p">,</span>
         <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;query_1&quot;</span><span class="p">,</span>  <span class="c1"># Optional: Add identifiers or other metadata</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that summarizes text.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an assistant that summarizes text. Respond in a JSON codeblock.&quot;</span><span class="p">,</span>
         <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">load_prompt</span><span class="p">(</span>
             <span class="s2">&quot;path/to/your/summary_template.md&quot;</span><span class="p">,</span>
             <span class="n">document</span><span class="o">=</span><span class="s2">&quot;Another document to summarize.&quot;</span><span class="p">,</span>
@@ -510,7 +508,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 <span class="c1"># Access a specific template</span>
 <span class="n">template</span> <span class="o">=</span> <span class="n">prompt_templates</span><span class="p">[</span><span class="s2">&quot;my_template_name&quot;</span><span class="p">]</span> <span class="c1"># Key is the filename stem</span>
 
-<span class="c1"># Render the template (if needed, though batch_model_query handles rendering internally via load_prompt)</span>
+<span class="c1"># Render the template</span>
 <span class="c1"># rendered = template.render(variable=&quot;value&quot;)</span>
 </pre></div>
 </div>
@@ -639,7 +637,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
     <div class="footer-items__center">
       
         <div class="footer-item"><p class="last-updated">
-  Last updated on Apr 18, 2025.
+  Last updated on Apr 19, 2025.
   <br/>
 </p></div>
       

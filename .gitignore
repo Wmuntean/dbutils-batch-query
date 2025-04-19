@@ -175,3 +175,5 @@ cython_debug/
 .ds_store
 .vscode/*
 !.vscode/*.code-snippets
+.github/*
+!.github/workflows/
