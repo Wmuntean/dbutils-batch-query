@@ -138,6 +138,18 @@ yarl = ">=1.17.0,<2.0"
 speedups = ["Brotli ; platform_python_implementation == \"CPython\"", "aiodns (>=3.2.0) ; sys_platform == \"linux\" or sys_platform == \"darwin\"", "brotlicffi ; platform_python_implementation != \"CPython\""]
 
 [[package]]
+name = "aiolimiter"
+version = "1.2.1"
+description = "asyncio rate limiter, a leaky bucket implementation"
+optional = false
+python-versions = "<4.0,>=3.8"
+groups = ["main"]
+files = [
+    {file = "aiolimiter-1.2.1-py3-none-any.whl", hash = "sha256:d3f249e9059a20badcb56b61601a83556133655c11d1eb3dd3e04ff069e5f3c7"},
+    {file = "aiolimiter-1.2.1.tar.gz", hash = "sha256:e02a37ea1a855d9e832252a105420ad4d15011505512a1a1d814647451b5cca9"},
+]
+
+[[package]]
 name = "aiosignal"
 version = "1.3.2"
 description = "aiosignal: a list of registered asynchronous callbacks"
@@ -4297,4 +4309,4 @@ dev = ["myst-parser", "nbsphinx", "numpydoc", "pigar", "poetry", "poetry-dynamic
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "777706297e47f31a436162704fb266984dfcd3a531cae8cfe9fcb928ff0266c4"
+content-hash = "8f0842a73fcc1cb7c768163126b4d5ba20f4ea4991deeaaf43cadc8f6488cab9"

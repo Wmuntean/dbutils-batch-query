@@ -95,6 +95,7 @@ from pathlib import Path
 from typing import Any, Callable, Dict, TypeVar, cast
 
 import pandas as pd
+from aiolimiter import AsyncLimiter
 from json_repair import repair_json
 from openai import AsyncOpenAI
 from tqdm.asyncio import tqdm
@@ -227,6 +228,7 @@ async def _get_response(
     model: str,
     process_func: Callable[[str], dict] | None,
     semaphore: asyncio.Semaphore,
+    rate_limiter: AsyncLimiter,
     model_params: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
@@ -245,6 +247,9 @@ async def _get_response(
         Function to process the response content. If None, raw content is returned.
     semaphore : asyncio.Semaphore
         Semaphore for limiting concurrent requests.
+    rate_limiter : AsyncLimiter
+        Rate limiter to control the number of requests per time interval. The rate limit is enforced
+        for each API call to avoid exceeding provider quotas or triggering throttling.
     model_params : dict, optional
         Dictionary of model parameters to override defaults. Supported keys:
         - ``max_tokens``: Maximum tokens for completion (default: 2048)
@@ -272,6 +277,10 @@ async def _get_response(
         The function measures and reports execution time for the model query.
         All metadata fields and prompt_info fields are merged into the response
         dictionary to create a flat structure.
+
+    .. Important::
+        The rate limiter is used to ensure that API requests do not exceed the allowed
+        rate, as specified by the ``rate_limit`` parameter in the batch processing function.
     """
 
     # Default model parameters
@@ -284,75 +293,77 @@ async def _get_response(
     temperature = model_params.get("temperature", DEFAULT_TEMPERATURE)
 
     async with semaphore:
-        # Initialize metadata dictionary
-        metadata = {
-            "model": model,
-            "temperature": temperature,
-            "max_tokens": max_tokens,
-            "usage": None,
-            "timing": None,
-        }
+        async with rate_limiter:
+            # Initialize metadata dictionary
+            metadata = {
+                "model": model,
+                "temperature": temperature,
+                "max_tokens": max_tokens,
+                "usage": None,
+                "timing": None,
+            }
 
-        start_time = time.perf_counter()
+            start_time = time.perf_counter()
+            response = {"start": start_time}
 
-        try:
-            messages = [
-                {"role": "system", "content": prompt_info["system"]},
-                {"role": "user", "content": prompt_info["user"]},
-            ]
+            try:
+                messages = [
+                    {"role": "system", "content": prompt_info["system"]},
+                    {"role": "user", "content": prompt_info["user"]},
+                ]
 
-            chat_completion = await client.chat.completions.create(
-                messages=messages,
-                model=model,
-                max_tokens=max_tokens,
-                temperature=temperature,
-            )
-
-            # Calculate and record execution time
-            execution_time = time.perf_counter() - start_time
-            metadata["timing"] = round(execution_time, 3)
-
-            # Update model info with version number
-            if hasattr(chat_completion, "model"):
-                metadata["model"] = chat_completion.model
-
-            # Extract usage information if available
-            if hasattr(chat_completion, "usage") and chat_completion.usage:
-                metadata["prompt_tokens"] = getattr(
-                    chat_completion.usage, "prompt_tokens", None
-                )
-                metadata["completion_tokens"] = getattr(
-                    chat_completion.usage, "completion_tokens", None
-                )
-                metadata["total_tokens"] = getattr(
-                    chat_completion.usage, "total_tokens", None
+                chat_completion = await client.chat.completions.create(
+                    messages=messages,
+                    model=model,
+                    max_tokens=max_tokens,
+                    temperature=temperature,
                 )
 
-            response = {"message": chat_completion.choices[0].message.content}
-            if process_func:
-                response["processed_response"] = process_func(
-                    chat_completion.choices[0].message.content
-                )
+                # Calculate and record execution time
+                execution_time = time.perf_counter() - start_time
+                metadata["timing"] = round(execution_time, 3)
 
-            response["chat"] = chat_completion
-            response["error"] = None
+                # Update model info with version number
+                if hasattr(chat_completion, "model"):
+                    metadata["model"] = chat_completion.model
 
-        except Exception as e:
-            # Calculate execution time even for failed requests
-            execution_time = time.perf_counter() - start_time
-            metadata["timing"] = execution_time
+                # Extract usage information if available
+                if hasattr(chat_completion, "usage") and chat_completion.usage:
+                    metadata["prompt_tokens"] = getattr(
+                        chat_completion.usage, "prompt_tokens", None
+                    )
+                    metadata["completion_tokens"] = getattr(
+                        chat_completion.usage, "completion_tokens", None
+                    )
+                    metadata["total_tokens"] = getattr(
+                        chat_completion.usage, "total_tokens", None
+                    )
 
-            response = {"message": None}
-            if process_func:
-                response["processed_response"] = getattr(
-                    process_func, "default_return", {}
-                )
-            response["chat"] = None
-            response["error"] = str(e)
+                response = {"message": chat_completion.choices[0].message.content}
+                if process_func:
+                    response["processed_response"] = process_func(
+                        chat_completion.choices[0].message.content
+                    )
 
-        response |= metadata
-        response |= prompt_info
-        return response
+                response["chat"] = chat_completion
+                response["error"] = None
+
+            except Exception as e:
+                # Calculate execution time even for failed requests
+                execution_time = time.perf_counter() - start_time
+                metadata["timing"] = round(execution_time, 3)
+
+                response = {"message": None}
+                if process_func:
+                    response["processed_response"] = getattr(
+                        process_func, "default_return", {}
+                    )
+                response["chat"] = None
+                response["error"] = str(e)
+
+            response |= metadata
+            response |= prompt_info
+            return response
 
 
 async def batch_model_query(
@@ -363,6 +374,7 @@ async def batch_model_query(
     process_func_params: dict = None,
     batch_size: int = 10,
     max_concurrent_requests: int = 5,
+    rate_limit: tuple = (2, 1),
     results_path: str | Path = None,
     run_name: str | Path = None,
     model_params: dict = None,
@@ -393,6 +405,10 @@ async def batch_model_query(
         Number of prompts to process between intermittent saves. Default is ``10``.
     max_concurrent_requests : int, optional
         Maximum number of concurrent API requests allowed. Default is ``5``.
+    rate_limit : tuple, optional
+        Tuple of (max_requests, interval_seconds) specifying the maximum number of requests allowed per interval.
+        Default is ``(2, 1)``, meaning 2 requests per 1 second. This is enforced using a rate limiter to avoid
+        exceeding API provider quotas or triggering throttling.
     results_path : str or Path, optional
         Path to save intermediate and final result files. If None, results are not saved. Default is ``None``.
     run_name : str or Path, optional
@@ -424,7 +440,6 @@ async def batch_model_query(
         - ``total_tokens``: Total number of tokens used (if available).
         - ``timing``: Query execution time in seconds.
         - All original keys from the corresponding entry in ``prompt_info``.
-
 
     .. Note::
         - When ``process_func`` is None, the function returns the raw message content in the ``message`` field.
@@ -459,6 +474,8 @@ async def batch_model_query(
         wrapped_process_func = process_func
 
     semaphore = asyncio.Semaphore(max_concurrent_requests)
+
+    rate_limiter = AsyncLimiter(*rate_limit)
     all_results = []
 
     num_prompts = len(prompt_info)
@@ -473,6 +490,7 @@ async def batch_model_query(
                 model,
                 wrapped_process_func,
                 semaphore,
+                rate_limiter,
                 model_params,
             )
             for prompt in prompt_batch
