@@ -351,7 +351,7 @@ async def _get_response(
             except Exception as e:
                 # Calculate execution time even for failed requests
                 execution_time = time.perf_counter() - start_time
-                metadata["timing"] = execution_time
+                metadata["timing"] = round(execution_time, 3)
 
                 response = {"message": None}
                 if process_func:
