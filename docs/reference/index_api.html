@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Reference &#8212; dbutils_batch_query 0.1.1 documentation</title>
+    <title>API Reference &#8212; dbutils_batch_query 0.1.2 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="../_static/documentation_options.js?v=92734c54"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,8 +53,8 @@
     <link rel="prev" title="dbutils-batch-query" href="../index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.1" />
-    <meta name="docbuild:last-update" content="Apr 19, 2025"/>
+  <meta name="docsearch:version" content="0.1.2" />
+    <meta name="docbuild:last-update" content="Apr 21, 2025"/>
   </head>
   
   
@@ -121,8 +121,8 @@
 </a></div>
     
       <div class="navbar-item"><!-- This will display the version of the docs -->
-0.1.1
-<!-- Release 0.1.1 --></div>
+0.1.2
+<!-- Release 0.1.2 --></div>
     
   </div>
   
@@ -420,8 +420,9 @@ Loads a single prompt with jinja rendering.</p></li>
     <span class="n">prompt_info</span><span class="o">=</span><span class="n">prompt_info</span><span class="p">,</span>
     <span class="n">model</span><span class="o">=</span><span class="s2">&quot;databricks-llama-4-maverick&quot;</span><span class="p">,</span>  <span class="c1"># Specify your Databricks model endpoint</span>
     <span class="n">process_func</span><span class="o">=</span><span class="n">extract_json_items</span><span class="p">,</span>  <span class="c1"># Optional: function to process raw text response</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-    <span class="n">max_concurrent_requests</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># Optional: Batch size before optional save</span>
+    <span class="n">max_concurrent_requests</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="c1"># Optional: Max concurrent requests</span>
+    <span class="n">rate_limit</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="c1"># Optional: Number of requests per second</span>
     <span class="n">results_path</span><span class="o">=</span><span class="s2">&quot;output_results/&quot;</span><span class="p">,</span>  <span class="c1"># Optional: path to save results</span>
     <span class="n">run_name</span><span class="o">=</span><span class="s2">&quot;my_batch_run&quot;</span><span class="p">,</span>  <span class="c1"># Optional: identifier for the run</span>
     <span class="c1"># token and host are automatically fetched from environment or dbutils if not provided</span>
@@ -474,8 +475,9 @@ Loads a single prompt with jinja rendering.</p></li>
         <span class="n">prompt_info</span><span class="o">=</span><span class="n">prompt_info</span><span class="p">,</span>
         <span class="n">model</span><span class="o">=</span><span class="s2">&quot;databricks-llama-4-maverick&quot;</span><span class="p">,</span>  <span class="c1"># Specify your Databricks model endpoint</span>
         <span class="n">process_func</span><span class="o">=</span><span class="n">extract_json_items</span><span class="p">,</span>  <span class="c1"># Optional: function to process raw text response</span>
-        <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-        <span class="n">max_concurrent_requests</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># Optional: Batch size before optional save</span>
+        <span class="n">max_concurrent_requests</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="c1"># Optional: Max concurrent requests</span>
+        <span class="n">rate_limit</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="c1"># Optional: Number of requests per second</span>
         <span class="n">results_path</span><span class="o">=</span><span class="s2">&quot;output_results/&quot;</span><span class="p">,</span>  <span class="c1"># Optional: path to save results</span>
         <span class="n">run_name</span><span class="o">=</span><span class="s2">&quot;my_batch_run&quot;</span><span class="p">,</span>  <span class="c1"># Optional: identifier for the run</span>
         <span class="c1"># token and host are automatically fetched from environment or dbutils if not provided</span>
@@ -593,7 +595,7 @@ Loads a single prompt with jinja rendering.</p></li>
     <div class="footer-items__center">
       
         <div class="footer-item"><p class="last-updated">
-  Last updated on Apr 19, 2025.
+  Last updated on Apr 21, 2025.
   <br/>
 </p></div>
       

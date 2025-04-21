@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>extract_json_items &#8212; dbutils_batch_query 0.1.1 documentation</title>
+    <title>extract_json_items &#8212; dbutils_batch_query 0.1.2 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="../../_static/documentation_options.js?v=92734c54"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,8 +53,8 @@
     <link rel="prev" title="with_default_return" href="dbutils_batch_query.model_query.with_default_return.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.1" />
-    <meta name="docbuild:last-update" content="Apr 19, 2025"/>
+  <meta name="docsearch:version" content="0.1.2" />
+    <meta name="docbuild:last-update" content="Apr 21, 2025"/>
   </head>
   
   
@@ -121,8 +121,8 @@
 </a></div>
     
       <div class="navbar-item"><!-- This will display the version of the docs -->
-0.1.1
-<!-- Release 0.1.1 --></div>
+0.1.2
+<!-- Release 0.1.2 --></div>
     
   </div>
   
@@ -364,7 +364,7 @@
 <h1>extract_json_items<a class="headerlink" href="#extract-json-items" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="dbutils_batch_query.model_query.extract_json_items">
-<span class="sig-name descname"><span class="pre">extract_json_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/dbutils_batch_query/model_query.html#extract_json_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbutils_batch_query.model_query.extract_json_items" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">extract_json_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../_modules/dbutils_batch_query/model_query.html#extract_json_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbutils_batch_query.model_query.extract_json_items" title="Link to this definition">#</a></dt>
 <dd><p>Extracts and parses all JSON objects or arrays from code blocks in the input text.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -375,7 +375,7 @@
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dict</dt><dd><p>A dictionary with an <code class="docutils literal notranslate"><span class="pre">items</span></code> key containing a list of all parsed JSON objects.
+<dt>list</dt><dd><p>A list containing all parsed JSON objects or arrays found in the code blocks.
 Returns an empty list if no valid JSON is found or parsing fails.</p>
 </dd>
 </dl>
@@ -409,7 +409,7 @@ The <code class="docutils literal notranslate"><span class="pre">repair_json</sp
 <span class="go">```</span>
 <span class="go">&#39;&#39;&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="s1">extract_json_items(text)</span>
-<span class="go">{&#39;items&#39;: [{&#39;key1&#39;: &#39;value1&#39;, &#39;key2&#39;: &#39;value2&#39;}, {&#39;key3&#39;: &#39;value3&#39;, &#39;key4&#39;: &#39;value4&#39;}]}</span>
+<span class="go">[{&#39;key1&#39;: &#39;value1&#39;, &#39;key2&#39;: &#39;value2&#39;}, {&#39;key3&#39;: &#39;value3&#39;, &#39;key4&#39;: &#39;value4&#39;}]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -486,7 +486,7 @@ The <code class="docutils literal notranslate"><span class="pre">repair_json</sp
     <div class="footer-items__center">
       
         <div class="footer-item"><p class="last-updated">
-  Last updated on Apr 19, 2025.
+  Last updated on Apr 21, 2025.
   <br/>
 </p></div>
       
