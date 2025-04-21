@@ -156,7 +156,7 @@ def with_default_return(default_return: Dict[str, Any]) -> Callable[[F], F]:
 
 
 @with_default_return([])
-def extract_json_items(text: str) -> dict:
+def extract_json_items(text: str) -> list:
     """
     Extracts and parses all JSON objects or arrays from code blocks in the input text.
 
@@ -167,8 +167,8 @@ def extract_json_items(text: str) -> dict:
 
     Returns
     -------
-    dict
-        A dictionary with an ``items`` key containing a list of all parsed JSON objects.
+    list
+        A list containing all parsed JSON objects or arrays found in the code blocks.
         Returns an empty list if no valid JSON is found or parsing fails.
 
     .. Note::
@@ -198,7 +198,7 @@ def extract_json_items(text: str) -> dict:
     ```
     '''
     >>> extract_json_items(text)
-    {'items': [{'key1': 'value1', 'key2': 'value2'}, {'key3': 'value3', 'key4': 'value4'}]}
+    [{'key1': 'value1', 'key2': 'value2'}, {'key3': 'value3', 'key4': 'value4'}]
     """
     # Regular expression to extract all content within triple backticks
     code_block_pattern = re.compile(r"```json(.*?)```", re.DOTALL)

@@ -95,8 +95,9 @@ results = await batch_model_query(
     prompt_info=prompt_info,
     model="databricks-llama-4-maverick",  # Specify your Databricks model endpoint
     process_func=extract_json_items,  # Optional: function to process raw text response
-    batch_size=5,
-    max_concurrent_requests=3,
+    batch_size=5, # Optional: Batch size before optional save
+    max_concurrent_requests=3, # Optional: Max concurrent requests
+    rate_limit = (2, 1), # Optional: Number of requests per second
     results_path="output_results/",  # Optional: path to save results
     run_name="my_batch_run",  # Optional: identifier for the run
     # token and host are automatically fetched from environment or dbutils if not provided
@@ -148,8 +149,9 @@ results = asyncio.run(
         prompt_info=prompt_info,
         model="databricks-llama-4-maverick",  # Specify your Databricks model endpoint
         process_func=extract_json_items,  # Optional: function to process raw text response
-        batch_size=5,
-        max_concurrent_requests=3,
+        batch_size=5, # Optional: Batch size before optional save
+        max_concurrent_requests=3, # Optional: Max concurrent requests
+        rate_limit = (2, 1), # Optional: Number of requests per second
         results_path="output_results/",  # Optional: path to save results
         run_name="my_batch_run",  # Optional: identifier for the run
         # token and host are automatically fetched from environment or dbutils if not provided
