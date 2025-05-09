@@ -134,11 +134,23 @@ from .model_query import (  # noqa: E402
     with_default_return,
 )
 from .prompts import load_all, load_prompt  # noqa: E402
+from .utils.file_utils import (  # noqa: E402
+    delete_from_databricks,
+    download_from_databricks,
+    upload_to_databricks,
+)
 
+# fmt: off
 __all__ = [
     "batch_model_query",
     "extract_json_items",
     "with_default_return",
+
     "load_all",
     "load_prompt",
+    
+    "delete_from_databricks",
+    "download_from_databricks",
+    "upload_to_databricks",
 ]
+# fmt: on

@@ -55,7 +55,6 @@ print(dbutils_batch_query.__version__)
 
 ## Documentation
 
-
 - API documentation is available at [Documentation](https://wmuntean.github.io/dbutils-batch-query/).
 
 ## Usage
@@ -209,6 +208,43 @@ rendered_prompt = load_prompt(
 )
 
 print(rendered_prompt)
+```
+
+### File Management
+
+The [`file_utils`](#dbutils_batch_query.utils.file_utils) module provides utilities to manage files and directories on Databricks volumes. It supports downloading, uploading, and deleting both individual files and entire folder trees.
+
+**Functions:**
+- ``download_from_databricks(remote_path: str, local_path: str | Path)``  
+  Download a file or directory from a Databricks volume to a local path.
+- ``upload_to_databricks(remote_path: str, local_path: str | Path)``  
+  Upload a local file or directory to a Databricks volume. Directory hierarchies are preserved.
+- ``delete_from_databricks(remote_path: str)``  
+  Delete a file or directory (recursively) from a Databricks volume.
+
+**Usage examples:**
+
+```python
+from dbutils_batch_query import (
+    download_from_databricks,
+    upload_to_databricks,
+    delete_from_databricks,
+)
+
+# Download an entire folder
+download_from_databricks("data/reports", "./local_reports")
+
+# Download a single file
+download_from_databricks("data/reports/report.csv", "./local_reports")
+
+# Upload a local directory
+upload_to_databricks("data/processed", "./processed_data")
+
+# Upload a single file
+upload_to_databricks("data/processed/summary.json", "./processed_data/summary.json")
+
+# Delete a file or folder
+delete_from_databricks("data/old_reports")
 ```
 
 ## Contributors
