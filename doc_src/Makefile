@@ -41,3 +41,5 @@ reqs:
 		exit 1; \
 	fi
 
+livehtml:
+	sphinx-autobuild "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

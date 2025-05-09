@@ -215,11 +215,11 @@ print(rendered_prompt)
 The [`file_utils`](#dbutils_batch_query.utils.file_utils) module provides utilities to manage files and directories on Databricks volumes. It supports downloading, uploading, and deleting both individual files and entire folder trees.
 
 **Functions:**
-- ``download_from_databricks(remote_path: str, local_path: str | Path)``  
+- [`download_from_databricks(remote_path: str, local_path: str | Path)`](#dbutils_batch_query.utils.file_utils.download_from_databricks)
   Download a file or directory from a Databricks volume to a local path.
-- ``upload_to_databricks(remote_path: str, local_path: str | Path)``  
+- [`upload_to_databricks(remote_path: str, local_path: str | Path)`](#dbutils_batch_query.utils.file_utils.upload_to_databricks)  
   Upload a local file or directory to a Databricks volume. Directory hierarchies are preserved.
-- ``delete_from_databricks(remote_path: str)``  
+- [`delete_from_databricks(remote_path: str)`](#dbutils_batch_query.utils.file_utils.delete_from_databricks)
   Delete a file or directory (recursively) from a Databricks volume.
 
 **Usage examples:**
