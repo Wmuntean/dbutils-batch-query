@@ -25,10 +25,20 @@ Modules Overview
   - :py:func:`~dbutils_batch_query.prompts.load_prompt`  
     Loads a single prompt with jinja rendering.
 
+* **File Utilities**:
+  The :py:mod:`~dbutils_batch_query.utils.file_utils` module provides utilities to interact with Databricks file systems. Key functions include:
+
+  - :py:func:`~dbutils_batch_query.utils.file_utils.download_from_databricks`
+    Downloads files or directories from Databricks volumes.
+  - :py:func:`~dbutils_batch_query.utils.file_utils.upload_to_databricks`
+    Uploads files or directories to Databricks volumes.
+  - :py:func:`~dbutils_batch_query.utils.file_utils.delete_from_databricks`
+    Deletes files or directories from Databricks volumes.
+
 For more detailed insights into each module, please see:
    - :doc:`model_query`
    - :doc:`prompts`
-
+   - :doc:`file_utils`
 Quick Start Examples
 --------------------
    .. include:: ../../../README.md
@@ -47,3 +57,4 @@ Quick Start Examples
 
    model_query
    prompts
+   file_utils

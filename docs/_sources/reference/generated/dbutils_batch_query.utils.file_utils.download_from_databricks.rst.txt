@@ -1,0 +1,4 @@
+﻿download\_from\_databricks
+==========================
+
+.. autofunction:: dbutils_batch_query.utils.file_utils.download_from_databricks

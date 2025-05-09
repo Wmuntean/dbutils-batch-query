@@ -1,0 +1,4 @@
+﻿delete\_from\_databricks
+========================
+
+.. autofunction:: dbutils_batch_query.utils.file_utils.delete_from_databricks

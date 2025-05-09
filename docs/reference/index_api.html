@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Reference &#8212; dbutils_batch_query 0.1.2 documentation</title>
+    <title>API Reference &#8212; dbutils_batch_query 0.1.3 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=92734c54"></script>
+    <script src="../_static/documentation_options.js?v=360bc84d"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,8 +53,8 @@
     <link rel="prev" title="dbutils-batch-query" href="../index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.2" />
-    <meta name="docbuild:last-update" content="Apr 21, 2025"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="May 09, 2025"/>
   </head>
   
   
@@ -121,8 +121,8 @@
 </a></div>
     
       <div class="navbar-item"><!-- This will display the version of the docs -->
-0.1.2
-<!-- Release 0.1.2 --></div>
+0.1.3
+<!-- Release 0.1.3 --></div>
     
   </div>
   
@@ -296,6 +296,7 @@
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="model_query.html">Model Query</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prompts.html">Prompts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_utils.html">File Utilities</a></li>
 </ul>
 </div>
 </nav></div>
@@ -378,11 +379,23 @@ The <a class="reference internal" href="prompts.html#module-dbutils_batch_query.
 Loads a single prompt with jinja rendering.</p></li>
 </ul>
 </li>
+<li><p><strong>File Utilities</strong>:
+The <a class="reference internal" href="file_utils.html#module-dbutils_batch_query.utils.file_utils" title="dbutils_batch_query.utils.file_utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">file_utils</span></code></a> module provides utilities to interact with Databricks file systems. Key functions include:</p>
+<ul>
+<li><p><a class="reference internal" href="generated/dbutils_batch_query.utils.file_utils.download_from_databricks.html#dbutils_batch_query.utils.file_utils.download_from_databricks" title="dbutils_batch_query.utils.file_utils.download_from_databricks"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_from_databricks</span></code></a>
+Downloads files or directories from Databricks volumes.</p></li>
+<li><p><a class="reference internal" href="generated/dbutils_batch_query.utils.file_utils.upload_to_databricks.html#dbutils_batch_query.utils.file_utils.upload_to_databricks" title="dbutils_batch_query.utils.file_utils.upload_to_databricks"><code class="xref py py-func docutils literal notranslate"><span class="pre">upload_to_databricks</span></code></a>
+Uploads files or directories to Databricks volumes.</p></li>
+<li><p><a class="reference internal" href="generated/dbutils_batch_query.utils.file_utils.delete_from_databricks.html#dbutils_batch_query.utils.file_utils.delete_from_databricks" title="dbutils_batch_query.utils.file_utils.delete_from_databricks"><code class="xref py py-func docutils literal notranslate"><span class="pre">delete_from_databricks</span></code></a>
+Deletes files or directories from Databricks volumes.</p></li>
+</ul>
+</li>
 </ul>
 <dl class="simple">
 <dt>For more detailed insights into each module, please see:</dt><dd><ul class="simple">
 <li><p><a class="reference internal" href="model_query.html"><span class="doc">Model Query</span></a></p></li>
 <li><p><a class="reference internal" href="prompts.html"><span class="doc">Prompts</span></a></p></li>
+<li><p><a class="reference internal" href="file_utils.html"><span class="doc">File Utilities</span></a></p></li>
 </ul>
 </dd>
 </dl>
@@ -595,7 +608,7 @@ Loads a single prompt with jinja rendering.</p></li>
     <div class="footer-items__center">
       
         <div class="footer-item"><p class="last-updated">
-  Last updated on Apr 21, 2025.
+  Last updated on May 09, 2025.
   <br/>
 </p></div>
       

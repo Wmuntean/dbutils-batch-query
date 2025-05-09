@@ -1,0 +1,4 @@
+﻿upload\_to\_databricks
+======================
+
+.. autofunction:: dbutils_batch_query.utils.file_utils.upload_to_databricks
