@@ -266,6 +266,8 @@ def main() -> None:
             ["poetry", "add"] + pip_dependencies, check=True, cwd=project_root
         )
 
+        subprocess.run(["poetry", "lock"])
+
         try:
             result = subprocess.run(
                 ["poetry", "self", "show", "plugins"],
