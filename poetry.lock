@@ -4624,4 +4624,4 @@ dev = ["myst-parser", "nbsphinx", "numpydoc", "pigar", "poetry", "poetry-dynamic
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "aad6bf8b160212b0bc585874b6c0406f6c0f7a394c4d6ae77419ead9b647add0"
+content-hash = "f46b9c2120db2c56f9d6c67e8c119ddf316e0819a116999fc0f5f2b1364a5845"

@@ -212,7 +212,7 @@ def main() -> None:
             match = re.search(r"[=<>!~]+([\w\.\-]+)", version)
             if match:
                 version = match.group(1)
-                dep = f"{package}~={version}"
+                dep = f"{package}~={'.'.join(version.split('.')[:2])}"
             else:
                 version = "0.0.0"
                 dep = f"{package}>{version}"
