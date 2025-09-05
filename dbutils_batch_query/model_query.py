@@ -156,7 +156,7 @@ def with_default_return(default_return: Dict[str, Any]) -> Callable[[F], F]:
 
 
 @with_default_return([])
-def extract_json_items(text: str) -> list:
+def extract_json_items(text: str | list) -> list:
     """
     Extracts and parses all JSON objects or arrays from code blocks in the input text.
 
@@ -200,6 +200,8 @@ def extract_json_items(text: str) -> list:
     >>> extract_json_items(text)
     [{'key1': 'value1', 'key2': 'value2'}, {'key3': 'value3', 'key4': 'value4'}]
     """
+    if isinstance(text, list):
+        text = text[1]["text"]  # Quick method to account for reasoning models
     # Regular expression to extract all content within triple backticks
     code_block_pattern = re.compile(r"```json(.*?)```", re.DOTALL)
     matches = code_block_pattern.findall(text)
@@ -443,7 +445,7 @@ async def batch_model_query(
 
     .. Note::
         - When ``process_func`` is None, the function returns the raw message content in the ``message`` field.
-        - After each batch, results (including ``chat`` objects) are saved as pickle files, and a version without the ``chat`` key is saved as a parquet file.
+        - After each batch, results (including ``chat`` objects) are saved as pickle files, and a version without the ``chat`` and ``message`` keys is saved as a parquet file.
         - Intermediate results are saved in a subdirectory named after ``run_name``; final results are saved in ``results_path``.
         - Intermediate files are deleted after successful completion.
 
@@ -512,12 +514,14 @@ async def batch_model_query(
             with open(pickle_path, "wb") as f:
                 pickle.dump(all_results, f)
 
-            # Create a copy of results without 'chat' key for parquet
+            # Create a copy of results without 'chat' and 'message keys for parquet
             results_no_chat = []
             for result in all_results:
                 result_copy = result.copy()
                 if "chat" in result_copy:
                     del result_copy["chat"]
+                if "message" in result_copy:
+                    del result_copy["message"]
                 results_no_chat.append(pd.DataFrame(result_copy))
 
             # Save as parquet
@@ -530,12 +534,14 @@ async def batch_model_query(
         with open(pickle_path, "wb") as f:
             pickle.dump(all_results, f)
 
-        # Create a copy of results without 'chat' key for parquet
+        # Create a copy of results without 'chat' and 'message keys for parquet
         results_no_chat = []
         for result in all_results:
             result_copy = result.copy()
             if "chat" in result_copy:
                 del result_copy["chat"]
+            if "message" in result_copy:
+                del result_copy["message"]
             results_no_chat.append(pd.DataFrame(result_copy))
 
         # Save as parquet
