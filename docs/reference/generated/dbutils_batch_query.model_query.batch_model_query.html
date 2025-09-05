@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>batch_model_query &#8212; dbutils_batch_query 0.1.4 documentation</title>
+    <title>batch_model_query &#8212; dbutils_batch_query 0.1.5 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=fd825880"></script>
+    <script src="../../_static/documentation_options.js?v=59fadc99"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,8 +53,8 @@
     <link rel="prev" title="extract_json_items" href="dbutils_batch_query.model_query.extract_json_items.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.4" />
-    <meta name="docbuild:last-update" content="May 29, 2025"/>
+  <meta name="docsearch:version" content="0.1.5" />
+    <meta name="docbuild:last-update" content="Sep 05, 2025"/>
   </head>
   
   
@@ -121,8 +121,8 @@
 </a></div>
     
       <div class="navbar-item"><!-- This will display the version of the docs -->
-0.1.4
-<!-- Release 0.1.4 --></div>
+0.1.5
+<!-- Release 0.1.5 --></div>
     
   </div>
   
@@ -429,7 +429,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 <p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p>When <code class="docutils literal notranslate"><span class="pre">process_func</span></code> is None, the function returns the raw message content in the <code class="docutils literal notranslate"><span class="pre">message</span></code> field.</p></li>
-<li><p>After each batch, results (including <code class="docutils literal notranslate"><span class="pre">chat</span></code> objects) are saved as pickle files, and a version without the <code class="docutils literal notranslate"><span class="pre">chat</span></code> key is saved as a parquet file.</p></li>
+<li><p>After each batch, results (including <code class="docutils literal notranslate"><span class="pre">chat</span></code> objects) are saved as pickle files, and a version without the <code class="docutils literal notranslate"><span class="pre">chat</span></code> and <code class="docutils literal notranslate"><span class="pre">message</span></code> keys is saved as a parquet file.</p></li>
 <li><p>Intermediate results are saved in a subdirectory named after <code class="docutils literal notranslate"><span class="pre">run_name</span></code>; final results are saved in <code class="docutils literal notranslate"><span class="pre">results_path</span></code>.</p></li>
 <li><p>Intermediate files are deleted after successful completion.</p></li>
 </ul>
@@ -624,7 +624,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
     <div class="footer-items__center">
       
         <div class="footer-item"><p class="last-updated">
-  Last updated on May 29, 2025.
+  Last updated on Sep 05, 2025.
   <br/>
 </p></div>
       
