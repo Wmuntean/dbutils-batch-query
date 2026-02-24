@@ -287,38 +287,45 @@ async def _get_response(
 
     # Default model parameters
     DEFAULT_MAX_TOKENS = 2048
-    DEFAULT_TEMPERATURE = 0
+    DEFAULT_TEMPERATURE = 0.7
 
     # Use provided model parameters or defaults
-    model_params = model_params or {}
-    max_tokens = model_params.get("max_tokens", DEFAULT_MAX_TOKENS)
-    temperature = model_params.get("temperature", DEFAULT_TEMPERATURE)
+    model_params_default = {
+        "max_tokens": DEFAULT_MAX_TOKENS,
+        "temperature": DEFAULT_TEMPERATURE,
+    }
+    model_params = model_params or model_params_default
 
     async with semaphore:
         async with rate_limiter:
             # Initialize metadata dictionary
             metadata = {
                 "model": model,
-                "temperature": temperature,
-                "max_tokens": max_tokens,
                 "usage": None,
                 "timing": None,
             }
+            metadata |= model_params
 
             start_time = time.perf_counter()
             response = {"start": start_time}
 
-            try:
+            system_prompt = prompt_info.get("system", None)
+            if system_prompt:
                 messages = [
                     {"role": "system", "content": prompt_info["system"]},
                     {"role": "user", "content": prompt_info["user"]},
                 ]
+            else:
+                messages = [
+                    {"role": "user", "content": prompt_info["user"]},
+                ]
+
+            try:
 
                 chat_completion = await client.chat.completions.create(
                     messages=messages,
                     model=model,
-                    max_tokens=max_tokens,
-                    temperature=temperature,
+                    **model_params,
                 )
 
                 # Calculate and record execution time
