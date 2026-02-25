@@ -321,7 +321,6 @@ async def _get_response(
                 ]
 
             try:
-
                 chat_completion = await client.chat.completions.create(
                     messages=messages,
                     model=model,
@@ -471,10 +470,16 @@ async def batch_model_query(
     if not token and not host:
         token, host = get_databricks_secrets()
 
-    client = AsyncOpenAI(
-        api_key=token,
-        base_url=f"{host}/serving-endpoints",
-    )
+        client = AsyncOpenAI(
+            api_key=token,
+            base_url=f"{host}/serving-endpoints",
+        )
+
+    else:
+        client = AsyncOpenAI(
+            api_key=token,
+            base_url=host,
+        )
 
     wrapped_process_func = None
     if process_func is not None and process_func_params is not None:
