@@ -201,7 +201,17 @@ def extract_json_items(text: str | list) -> list:
     [{'key1': 'value1', 'key2': 'value2'}, {'key3': 'value3', 'key4': 'value4'}]
     """
     if isinstance(text, list):
-        text = text[1]["text"]  # Quick method to account for reasoning models
+        # Reasoning models may return content as a list of parts. Join all text
+        # parts so we do not silently discard valid JSON blocks.
+        text_parts = []
+        for part in text:
+            if isinstance(part, dict):
+                part_text = part.get("text")
+                if isinstance(part_text, str):
+                    text_parts.append(part_text)
+            elif isinstance(part, str):
+                text_parts.append(part)
+        text = "\n".join(text_parts)
     # Regular expression to extract all content within triple backticks
     code_block_pattern = re.compile(r"```json(.*?)```", re.DOTALL)
     matches = code_block_pattern.findall(text)
@@ -262,8 +272,10 @@ async def _get_response(
     dict
         A flat dictionary containing all the following fields:
 
-        - ``message``: Raw response content from the model
-        - ``processed_response``: Present if process_func is provided, containing processed content
+                - ``message``: Raw response content from the model. Returns a string
+                    for one choice, or a list of strings for multiple choices.
+                - ``processed_response``: Present if process_func is provided. Returns
+                    one processed item for a single choice, or a list for multiple choices.
         - ``chat``: Full API response object
         - ``error``: Error message if an exception occurred, None otherwise
         - ``model``: Model name used for generation
@@ -347,11 +359,23 @@ async def _get_response(
                         chat_completion.usage, "total_tokens", None
                     )
 
-                response = {"message": chat_completion.choices[0].message.content}
+                choice_messages = [
+                    choice.message.content for choice in chat_completion.choices
+                ]
+                if len(choice_messages) == 1:
+                    response = {"message": choice_messages[0]}
+                else:
+                    response = {"message": choice_messages}
+
                 if process_func:
-                    response["processed_response"] = process_func(
-                        chat_completion.choices[0].message.content
-                    )
+                    processed_response = [
+                        process_func(choice_message)
+                        for choice_message in choice_messages
+                    ]
+                    if len(processed_response) == 1:
+                        response["processed_response"] = processed_response[0]
+                    else:
+                        response["processed_response"] = processed_response
 
                 response["chat"] = chat_completion
                 response["error"] = None
@@ -436,8 +460,11 @@ async def batch_model_query(
     list of dict
         A list of dictionaries, each containing the response and associated metadata for a prompt. Each dictionary includes:
 
-        - ``message``: Raw response content from the model.
-        - ``processed_response``: Processed content if ``process_func`` is provided.
+                - ``message``: Raw response content from the model. Returns a string
+                    for one choice, or a list of strings for multiple choices.
+                - ``processed_response``: Processed content if ``process_func`` is
+                    provided. Returns one item for a single choice, or a list for
+                    multiple choices.
         - ``chat``: Full API response object (or ``None`` on error).
         - ``error``: Error message if an exception occurred, ``None`` otherwise.
         - ``model``: Model name used for generation.

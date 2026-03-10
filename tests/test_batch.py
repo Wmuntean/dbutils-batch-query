@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from dbutils_batch_query.model_query import batch_model_query
+from dbutils_batch_query.model_query import batch_model_query, extract_json_items
 
 # test_model_query.py
 
@@ -223,3 +223,73 @@ async def test_batch_model_query_error(monkeypatch):
     assert results[0]["message"] is None
     assert results[0]["error"] is not None
     assert "API error" in results[0]["error"]
+
+
+@pytest.mark.asyncio
+async def test_batch_model_query_multiple_choices(monkeypatch):
+    """Test automatic parsing and processing of multiple completion choices."""
+
+    monkeypatch.setattr(
+        "dbutils_batch_query.model_query.get_databricks_secrets",
+        lambda: ("dummy_token", "https://dummy_host"),
+    )
+
+    class FakeUsage:
+        prompt_tokens = 4
+        completion_tokens = 8
+        total_tokens = 12
+
+    class FakeChoice:
+        def __init__(self, content: str) -> None:
+            self.message = MagicMock(content=content)
+
+    class FakeChatCompletion:
+        model = "databricks-llama-4-maverick"
+        usage = FakeUsage()
+        choices = [FakeChoice("First"), FakeChoice("Second")]
+
+    fake_client = MagicMock()
+    fake_client.chat.completions.create = AsyncMock(return_value=FakeChatCompletion())
+
+    monkeypatch.setattr(
+        "dbutils_batch_query.model_query.AsyncOpenAI",
+        lambda api_key, base_url: fake_client,
+    )
+    monkeypatch.setattr("dbutils_batch_query.model_query.tqdm.gather", asyncio.gather)
+
+    prompts = [{"system": "You are a helper.", "user": "Give two options."}]
+
+    def process_func(text: str) -> dict:
+        return {"normalized": text.lower()}
+
+    results = await batch_model_query(
+        prompt_info=prompts,
+        model="databricks-llama-4-maverick",
+        process_func=process_func,
+        batch_size=1,
+        max_concurrent_requests=1,
+        model_params={"max_tokens": 32, "temperature": 0.1, "n": 2},
+    )
+
+    assert len(results) == 1
+    assert results[0]["message"] == ["First", "Second"]
+    assert results[0]["processed_response"] == [
+        {"normalized": "first"},
+        {"normalized": "second"},
+    ]
+    assert results[0]["error"] is None
+
+
+def test_extract_json_items_list_content_parts():
+    """Test parsing JSON when content is returned as a list of text parts."""
+
+    text_parts = [
+        {"type": "reasoning", "text": "thinking..."},
+        {
+            "type": "output_text",
+            "text": '```json\n[{"id": 1}, {"id": 2}]\n```',
+        },
+    ]
+
+    parsed = extract_json_items(text_parts)
+    assert parsed == [{"id": 1}, {"id": 2}]
