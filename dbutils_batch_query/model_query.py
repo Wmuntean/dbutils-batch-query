@@ -515,41 +515,61 @@ async def batch_model_query(
         wrapped_process_func = process_func
 
     semaphore = asyncio.Semaphore(max_concurrent_requests)
-
     rate_limiter = AsyncLimiter(*rate_limit)
     all_results = []
 
-    num_prompts = len(prompt_info)
-    for start in range(0, num_prompts, batch_size):
-        end = min(start + batch_size, num_prompts)
-        prompt_batch = prompt_info[start:end]
+    try:
+        num_prompts = len(prompt_info)
+        for start in range(0, num_prompts, batch_size):
+            end = min(start + batch_size, num_prompts)
+            prompt_batch = prompt_info[start:end]
 
-        tasks = [
-            _get_response(
-                prompt,
-                client,
-                model,
-                wrapped_process_func,
-                semaphore,
-                rate_limiter,
-                model_params,
-            )
-            for prompt in prompt_batch
-        ]
+            tasks = [
+                _get_response(
+                    prompt,
+                    client,
+                    model,
+                    wrapped_process_func,
+                    semaphore,
+                    rate_limiter,
+                    model_params,
+                )
+                for prompt in prompt_batch
+            ]
 
-        batch_results = await tqdm.gather(*tasks)
-        all_results.extend(batch_results)
+            batch_results = await tqdm.gather(*tasks)
+            all_results.extend(batch_results)
 
-        # Save intermediate results if paths are provided
+            # Save intermediate results if paths are provided
+            if results_path and run_name:
+                # Create results_path directory if it doesn't exist
+                if isinstance(results_path, str):
+                    results_path = Path(results_path)
+                inter_path = results_path / run_name
+                inter_path.mkdir(parents=True, exist_ok=True)
+
+                # Save all_results directly as pickle
+                pickle_path = inter_path / f"{run_name}.pkl"
+                with open(pickle_path, "wb") as f:
+                    pickle.dump(all_results, f)
+
+                # Create a copy of results without 'chat' and 'message keys for parquet
+                results_no_chat = []
+                for result in all_results:
+                    result_copy = result.copy()
+                    if "chat" in result_copy:
+                        del result_copy["chat"]
+                    if "message" in result_copy:
+                        del result_copy["message"]
+                    results_no_chat.append(pd.DataFrame(result_copy))
+
+                # Save as parquet
+                df_batch = pd.concat(results_no_chat)
+                df_batch.to_parquet(inter_path / f"{run_name}.parquet", index=False)
+
         if results_path and run_name:
-            # Create results_path directory if it doesn't exist
-            if isinstance(results_path, str):
-                results_path = Path(results_path)
-            inter_path = results_path / run_name
-            inter_path.mkdir(parents=True, exist_ok=True)
-
             # Save all_results directly as pickle
-            pickle_path = inter_path / f"{run_name}.pkl"
+            pickle_path = results_path / f"{run_name}.pkl"
             with open(pickle_path, "wb") as f:
                 pickle.dump(all_results, f)
 
@@ -565,30 +585,12 @@ async def batch_model_query(
 
             # Save as parquet
             df_batch = pd.concat(results_no_chat)
-            df_batch.to_parquet(inter_path / f"{run_name}.parquet", index=False)
+            df_batch.to_parquet(results_path / f"{run_name}.parquet", index=False)
 
-    if results_path and run_name:
-        # Save all_results directly as pickle
-        pickle_path = results_path / f"{run_name}.pkl"
-        with open(pickle_path, "wb") as f:
-            pickle.dump(all_results, f)
+            # Delete intermediate results if requested
+            if inter_path.exists():
+                shutil.rmtree(inter_path)
 
-        # Create a copy of results without 'chat' and 'message keys for parquet
-        results_no_chat = []
-        for result in all_results:
-            result_copy = result.copy()
-            if "chat" in result_copy:
-                del result_copy["chat"]
-            if "message" in result_copy:
-                del result_copy["message"]
-            results_no_chat.append(pd.DataFrame(result_copy))
-
-        # Save as parquet
-        df_batch = pd.concat(results_no_chat)
-        df_batch.to_parquet(results_path / f"{run_name}.parquet", index=False)
-
-        # Delete intermediate results if requested
-        if inter_path.exists():
-            shutil.rmtree(inter_path)
-
-    return all_results
+        return all_results
+    finally:
+        await client.close()
